@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "329020937608",
+    "firebase_url": "https://pongmania-1b48d.firebaseio.com",
+    "project_id": "pongmania-1b48d",
+    "storage_bucket": "pongmania-1b48d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329020937608:android:691c43d2e3679e2c",
+        "android_client_info": {
+          "package_name": "com.pongmania.konanov"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329020937608-5qoktbqlia1tak2b5je445mm4v8p9agf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pongmania.konanov",
+            "certificate_hash": "74e56d46b778ad6eb93fba47e199079c36804ab4"
+          }
+        },
+        {
+          "client_id": "329020937608-7c0r7nvtv5qrq5bm81nd4pvhvk8h6v05.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBInJ8C7R_RFkgyScQEJdruUnL7nu-_B3o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329020937608-7c0r7nvtv5qrq5bm81nd4pvhvk8h6v05.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
