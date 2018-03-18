@@ -1,3 +1,4 @@
-package com.pongmania.konanov
+package com.konanov.model.person
 
-data class Player(val id: String, val userName: String)
+
+class Player(private val id: String)
