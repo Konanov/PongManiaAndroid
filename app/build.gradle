@@ -33,6 +33,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
+    compile group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.3.0'
+    // https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxkotlin
+    compile group: 'io.reactivex.rxjava2', name: 'rxkotlin', version: '2.0.0-RC3'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
