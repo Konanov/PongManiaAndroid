@@ -10,4 +10,7 @@
     <string name="etEmail">etEmail</string>
     <string name="etPassword">etPassword</string>
     <string name="scoreBoard">Score Board</string>
+    <string name="thumbnail">Player Icon</string>
+    <string name="rating">Rating</string>
+    <string name="rating_deviation">Rating Deviation</string>
 </resources>
