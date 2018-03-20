@@ -1,4 +1,4 @@
-package com.pongmania.konanov
+package com.pongmania.konanov.activity
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -13,6 +13,16 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.gson.GsonBuilder
+import com.pongmania.konanov.R
+import com.pongmania.konanov.api.PongManiaApi
+import com.pongmania.konanov.model.Player
+import com.pongmania.konanov.util.CredentialsPreference
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class CreateAccountActivity: AppCompatActivity() {
@@ -37,6 +47,11 @@ class CreateAccountActivity: AppCompatActivity() {
     private var lastName: String? = null
     private var email: String? = null
     private var password: String? = null
+
+    private val retrofit = Retrofit.Builder().baseUrl("http://10.0.2.2:8080/")
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,12 +96,28 @@ class CreateAccountActivity: AppCompatActivity() {
                             val userId = mAuth!!.currentUser!!.uid
 
                             //Verify Email
-                            verifyEmail();
+                            verifyEmail()
 
                             //update user profile information
                             val currentUserDb = mDatabaseReference!!.child(userId)
                             currentUserDb.child("firstName").setValue(firstName)
                             currentUserDb.child("lastName").setValue(lastName)
+
+                            val api = retrofit.create(PongManiaApi::class.java)
+                            api.createUser(Player.Credentials(email!!, firstName!!, lastName!!, password!!))
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribeOn(Schedulers.io())
+                                    .subscribe({
+                                        result ->
+                                        Log.d("Result", "User created\n$result")
+                                    }, {
+                                        error ->
+                                        Log.d("ERROR", "Request resulted in error\n${error.printStackTrace()}")
+                                        Toast.makeText(this, "Ошибка при создании пользователя",
+                                                Toast.LENGTH_SHORT).show()
+                                    })
+
+                            CredentialsPreference.setUserName(this, email!!, password!!)
 
                             updateUserInfoAndUI()
                         } else {
@@ -111,13 +142,13 @@ class CreateAccountActivity: AppCompatActivity() {
     }
 
     private fun verifyEmail() {
-        val mUser = mAuth!!.currentUser;
+        val mUser = mAuth!!.currentUser
         mUser!!.sendEmailVerification()
                 .addOnCompleteListener(this) { task ->
 
                     if (task.isSuccessful) {
                         Toast.makeText(this@CreateAccountActivity,
-                                "Verification email sent to " + mUser.getEmail(),
+                                "Verification email sent to " + mUser.email,
                                 Toast.LENGTH_SHORT).show()
                     } else {
                         Log.e(TAG, "sendEmailVerification", task.exception)

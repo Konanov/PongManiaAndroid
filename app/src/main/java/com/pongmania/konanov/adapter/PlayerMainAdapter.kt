@@ -1,4 +1,4 @@
-package com.pongmania.konanov
+package com.pongmania.konanov.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.pongmania.konanov.R
+import com.pongmania.konanov.model.Player
 
 class PlayerMainAdapter(private val context: Context,
                         private val dataSource: ArrayList<Player>) : BaseAdapter() {
@@ -15,18 +17,19 @@ class PlayerMainAdapter(private val context: Context,
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val rowView = inflater.inflate(R.layout.player_row, parent, false)
         // Get title element
+        val userNameTitle = rowView.findViewById<View>(R.id.userName_title) as TextView
         val userName = rowView.findViewById<View>(R.id.userName_subtitle) as TextView
         // Get subtitle element
         val rating = rowView.findViewById<View>(R.id.rating) as TextView
-
-        // Get detail element
-        val ratingDeviation = rowView.findViewById<View>(R.id.rating_deviation) as TextView
+        val ratingTitle = rowView.findViewById<View>(R.id.rating_title) as TextView
 
         val player = getItem(position) as Player
+        val playerName = "${player.credentials.firstName} ${player.credentials.lastName}"
 
-        userName.text = player.credentials.userName
+        userNameTitle.text = context.getString(R.string.user_name_title)
+        userName.text = playerName
+        ratingTitle.text = context.getString(R.string.rating)
         rating.text = player.latestRating.rating
-        ratingDeviation.text = player.latestRating.ratingDeviation
 
         return rowView
     }

@@ -1,4 +1,4 @@
-package com.pongmania.konanov
+package com.pongmania.konanov.model
 
 data class Player(val id: String,
                   val credentials: Credentials,
@@ -6,11 +6,10 @@ data class Player(val id: String,
     private val status: Status? = null
     private val points: Double = 0.toDouble()
 
-    class Credentials {
-        val email: String? = null
-        val userName: String? = null
-        val password: String? = null
-    }
+    class Credentials(val email: String,
+                      val firstName: String,
+                      val lastName: String,
+                      val password: String)
 
     class Rating {
         val rating: String? = null

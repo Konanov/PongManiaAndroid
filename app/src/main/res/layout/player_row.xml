@@ -45,8 +45,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:textSize="18sp"
-            tools:text="User" />
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:hint="@string/user_name_title"/>
 
         <TextView
             android:id="@+id/userName_subtitle"
@@ -65,13 +66,10 @@
             android:id="@+id/rating_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/userName_title"
-            android:layout_marginLeft="130dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="-20dp"
-            android:ellipsize="end"
+            android:layout_marginStart="130dp"
             android:maxLines="3"
             android:textSize="12sp"
+            android:textStyle="bold"
             tools:text="@string/rating" />
 
         <TextView
@@ -79,39 +77,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/userName_title"
-            android:layout_marginLeft="130dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginStart="130dp"
             android:layout_marginTop="2dp"
             android:ellipsize="end"
             android:maxLines="3"
             android:textSize="16sp"
             tools:text="Rating" />
-
-        <TextView
-            android:id="@+id/rating_deviation_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/userName_title"
-            android:layout_marginLeft="200dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="-10dp"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:textSize="12sp"
-            tools:text="@string/rating_deviation" />
-
-        <TextView
-            android:id="@+id/rating_deviation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/userName_title"
-            android:layout_marginLeft="200dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="2dp"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:textSize="16sp"
-            tools:text="Rating Deviation" />
-
     </RelativeLayout>
 </RelativeLayout>

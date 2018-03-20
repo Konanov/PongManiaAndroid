@@ -1,4 +1,4 @@
-package com.pongmania.konanov
+package com.pongmania.konanov.activity
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -12,15 +12,17 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.pongmania.konanov.R
+import com.pongmania.konanov.util.CredentialsPreference
 
 /**
  * A login screen that offers login via email/password.
  */
 class LoginActivity : AppCompatActivity() {
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-
     private val TAG = "LoginActivity"
 
     //global variables
@@ -72,37 +74,43 @@ class LoginActivity : AppCompatActivity() {
         email = etEmail?.text.toString()
         password = etPassword?.text.toString()
 
-        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+        if (CredentialsPreference.getUserName(this).isEmpty()) {
 
-            mProgressBar!!.setMessage("Registering User...")
-            mProgressBar!!.show()
+            if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
 
-            Log.d(TAG, "Logging in user.")
+                mProgressBar!!.setMessage("Registering User...")
+                mProgressBar!!.show()
 
-            mAuth!!.signInWithEmailAndPassword(email!!, password!!)
-                    .addOnCompleteListener(this) { task ->
+                Log.d(TAG, "Logging in user.")
 
-                        mProgressBar!!.hide()
+                mAuth!!.signInWithEmailAndPassword(email!!, password!!)
+                        .addOnCompleteListener(this) { task ->
 
-                        if (task.isSuccessful) {
-                            // Sign in success, update UI with signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success")
-                            updateUI()
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.e(TAG, "signInWithEmail:failure", task.exception)
-                            Toast.makeText(this@LoginActivity, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show()
+                            mProgressBar!!.hide()
+
+                            if (task.isSuccessful) {
+                                // Sign in success, update UI with signed-in user's information
+                                Log.d(TAG, "signInWithEmail:success")
+                                updateUI()
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.e(TAG, "signInWithEmail:failure", task.exception)
+                                Toast.makeText(this@LoginActivity, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    }
+            } else {
+                Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show()
+            }
         } else {
-            Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show()
+            updateUI()
         }
     }
 
     private fun updateUI() {
         val intent = Intent(this@LoginActivity, ScoreBoardActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        finishAffinity()
         startActivity(intent)
     }
 }
