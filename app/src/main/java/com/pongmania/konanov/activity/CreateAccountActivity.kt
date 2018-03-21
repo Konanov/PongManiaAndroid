@@ -90,7 +90,7 @@ class CreateAccountActivity: AppCompatActivity() {
                         mProgressBar!!.hide()
 
                         if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
+                            // Sign in success, update UI with the signed-in user'PONGMANIA_API_BASE_URL information
                             Log.d(TAG, "createUserWithEmail:success")
 
                             val userId = mAuth!!.currentUser!!.uid
@@ -117,7 +117,7 @@ class CreateAccountActivity: AppCompatActivity() {
                                                 Toast.LENGTH_SHORT).show()
                                     })
 
-                            CredentialsPreference.setUserName(this, email!!, password!!)
+                            CredentialsPreference.setCredentials(this, email!!, password!!)
 
                             updateUserInfoAndUI()
                         } else {

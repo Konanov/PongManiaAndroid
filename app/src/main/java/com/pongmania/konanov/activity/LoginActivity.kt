@@ -37,14 +37,18 @@ class LoginActivity : AppCompatActivity() {
     private var btnCreateAccount: Button? = null
     private var mProgressBar: ProgressDialog? = null
 
-    //Firebase references
+    //FireBase references
     private var mAuth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
-        initialise()
+        if (noPreferences()) {
+            setContentView(R.layout.activity_login)
+            initialise()
+        } else {
+            updateUI()
+            this.finish()
+        }
     }
 
     private fun initialise() {
@@ -74,43 +78,47 @@ class LoginActivity : AppCompatActivity() {
         email = etEmail?.text.toString()
         password = etPassword?.text.toString()
 
-        if (CredentialsPreference.getUserName(this).isEmpty()) {
-
-            if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
-
-                mProgressBar!!.setMessage("Registering User...")
-                mProgressBar!!.show()
-
+            if (mandatoryFieldsPresent()) {
+                showProgressBar()
                 Log.d(TAG, "Logging in user.")
-
-                mAuth!!.signInWithEmailAndPassword(email!!, password!!)
-                        .addOnCompleteListener(this) { task ->
-
-                            mProgressBar!!.hide()
-
-                            if (task.isSuccessful) {
-                                // Sign in success, update UI with signed-in user's information
-                                Log.d(TAG, "signInWithEmail:success")
-                                updateUI()
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.e(TAG, "signInWithEmail:failure", task.exception)
-                                Toast.makeText(this@LoginActivity, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                trySignIn()
             } else {
                 Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show()
             }
-        } else {
-            updateUI()
         }
+
+    private fun trySignIn() {
+        mAuth!!.signInWithEmailAndPassword(email!!, password!!)
+                .addOnCompleteListener(this) { task ->
+
+                    mProgressBar!!.hide()
+
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with signed-in user information
+                        Log.d(TAG, "signInWithEmail:success")
+                        updateUI()
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.e(TAG, "signInWithEmail:failure", task.exception)
+                        Toast.makeText(this@LoginActivity, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show()
+                    }
+                }
     }
+
+    private fun showProgressBar() {
+        mProgressBar!!.setMessage("Registering User...")
+        mProgressBar!!.show()
+    }
+
+    private fun mandatoryFieldsPresent() = !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)
+
+    private fun noPreferences() = CredentialsPreference.getEmail(this).isEmpty() ||
+            CredentialsPreference.getPassword(this).isEmpty()
 
     private fun updateUI() {
         val intent = Intent(this@LoginActivity, ScoreBoardActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        finishAffinity()
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
 }
