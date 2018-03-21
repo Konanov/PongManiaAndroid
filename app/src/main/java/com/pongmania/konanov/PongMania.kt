@@ -1,28 +1,29 @@
 package com.pongmania.konanov
 
 import android.app.Application
-import com.pongmania.konanov.components.AppComponent
-import com.pongmania.konanov.components.DaggerAppComponent
-import com.pongmania.konanov.modules.AppModule
-import com.pongmania.konanov.modules.WebModule
+import com.pongmania.konanov.dagger.components.AppComponent
+import com.pongmania.konanov.dagger.components.DaggerAppComponent
+import com.pongmania.konanov.dagger.components.WebComponent
+import com.pongmania.konanov.dagger.modules.AppModule
 
 class PongMania : Application() {
 
-    private val appComponent: AppComponent by lazy {
-        DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .build()
-    }
+    lateinit var appComponent: AppComponent
+    lateinit var webComponent: WebComponent
 
-    private val webComponent: AppComponent by lazy {
-        DaggerWebComponent.builder()
-                .webModule(WebModule("http://10.0.2.2:8080/"))
-                .build()
-    }
+    private fun initDagger(app: PongMania): AppComponent =
+            DaggerAppComponent.builder()
+                    .appModule(AppModule(app))
+                    .build()
+
+    private fun initWebDagger(app: PongMania): WebComponent =
+            DaggerWebComponent.builder()
+                    .build()
+
 
     override fun onCreate() {
         super.onCreate()
-        appComponent.inject(this)
-        webComponent.inject(this)
+        appComponent = initDagger(this)
+        webComponent = initWebDagger(this)
     }
 }

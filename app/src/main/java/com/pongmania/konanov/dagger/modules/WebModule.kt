@@ -1,13 +1,8 @@
-package com.pongmania.konanov.modules
+package com.pongmania.konanov.dagger.modules
 
 import com.google.gson.GsonBuilder
-import com.pongmania.konanov.api.PongManiaApi
 import com.pongmania.konanov.interceptors.BasicAuthInterceptor
-import com.pongmania.konanov.model.Player
 import com.pongmania.konanov.util.CredentialsPreference
-import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
