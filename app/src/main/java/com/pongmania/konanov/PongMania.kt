@@ -3,8 +3,10 @@ package com.pongmania.konanov
 import android.app.Application
 import com.pongmania.konanov.dagger.components.AppComponent
 import com.pongmania.konanov.dagger.components.DaggerAppComponent
+import com.pongmania.konanov.dagger.components.DaggerWebComponent
 import com.pongmania.konanov.dagger.components.WebComponent
 import com.pongmania.konanov.dagger.modules.AppModule
+import com.pongmania.konanov.dagger.modules.WebModule
 
 class PongMania : Application() {
 
@@ -18,6 +20,7 @@ class PongMania : Application() {
 
     private fun initWebDagger(app: PongMania): WebComponent =
             DaggerWebComponent.builder()
+                    .webModule(WebModule(app))
                     .build()
 
 

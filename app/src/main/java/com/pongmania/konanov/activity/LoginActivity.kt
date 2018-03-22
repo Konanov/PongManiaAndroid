@@ -113,8 +113,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun mandatoryFieldsPresent() = !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)
 
-    private fun noPreferences() = CredentialsPreference.getEmail(this).isEmpty() ||
-            CredentialsPreference.getPassword(this).isEmpty()
+    private fun noPreferences() = CredentialsPreference.getEmail(this.application).isEmpty() ||
+            CredentialsPreference.getPassword(this.application).isEmpty()
 
     private fun updateUI() {
         val intent = Intent(this@LoginActivity, ScoreBoardActivity::class.java)

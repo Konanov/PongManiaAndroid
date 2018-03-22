@@ -117,7 +117,7 @@ class CreateAccountActivity: AppCompatActivity() {
                                                 Toast.LENGTH_SHORT).show()
                                     })
 
-                            CredentialsPreference.setCredentials(this, email!!, password!!)
+                            CredentialsPreference.setCredentials(this.application, email!!, password!!)
 
                             updateUserInfoAndUI()
                         } else {

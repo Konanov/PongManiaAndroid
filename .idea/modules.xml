@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PongMania.iml" filepath="$PROJECT_DIR$/PongMania.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PongManiaAndroid.iml" filepath="$PROJECT_DIR$/PongManiaAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

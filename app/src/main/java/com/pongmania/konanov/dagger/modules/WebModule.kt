@@ -17,49 +17,35 @@ import com.google.gson.Gson
 import dagger.Module
 
 @Module
-class WebModule(private val baseUrl: String) {
+class WebModule(private val app: Application) {
 
-    private val apiBaseUrl = "http://10.0.2.2:8080/"
-
-    @Provides
-    @Singleton
-    fun provideHttpCache(application: Application): Cache {
-        val cacheSize = 10L * 1024L * 1024L
-        return Cache(application.cacheDir, cacheSize)
+    companion object {
+        const val API_URL = "http://10.0.2.2:8080/"
     }
 
     @Provides
     @Singleton
-    fun provideGson(): Gson {
+    fun provideRetrofit(): Retrofit {
+        val cacheSize = 10L * 1024L * 1024L
+        val cache = Cache(app.cacheDir, cacheSize)
+
         val gsonBuilder = GsonBuilder()
         gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-        return gsonBuilder.create()!!
-    }
+        val builder =  gsonBuilder.create()!!
 
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(cache: Cache, ctx: Context): OkHttpClient {
         val client = OkHttpClient.Builder()
-                .addInterceptor(BasicAuthInterceptor(CredentialsPreference.getEmail(ctx),
-                        CredentialsPreference.getPassword(ctx)))
+                .addInterceptor(BasicAuthInterceptor(
+                        CredentialsPreference.getEmail(app),
+                        CredentialsPreference.getPassword(app))
+                )
         client.cache(cache)
-        return client.build()!!
-    }
+        val okHttpClient = client.build()!!
 
-    @Provides
-    @Singleton
-    fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create(builder))
+                .baseUrl(API_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build()!!
     }
-
-    //fun allPlayers(): Flowable<List<Player>> {
-    //    return api.getPlayers()
-    //            .observeOn(AndroidSchedulers.mainThread())
-    //            .subscribeOn(Schedulers.io())
-    //}
 }

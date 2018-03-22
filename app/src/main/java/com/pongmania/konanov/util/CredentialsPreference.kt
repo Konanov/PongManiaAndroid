@@ -1,5 +1,6 @@
 package com.pongmania.konanov.util
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
@@ -10,22 +11,22 @@ object CredentialsPreference {
     private const val EMAIL = "com.pongmania.konanov.Email"
     private const val PASSWORD = "com.pongmania.konanov.Password"
 
-    private fun getSharedPreferences(ctx: Context): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(ctx)
+    private fun getSharedPreferences(app: Application): SharedPreferences {
+        return PreferenceManager.getDefaultSharedPreferences(app)
     }
 
-    fun setCredentials(ctx: Context, email: String, password: String) {
-        val editor = getSharedPreferences(ctx).edit()
+    fun setCredentials(app: Application, email: String, password: String) {
+        val editor = getSharedPreferences(app).edit()
         editor.putString(EMAIL, email)
         editor.putString(PASSWORD, password)
         editor.apply()
     }
 
-    fun getEmail(ctx: Context): String {
-        return getSharedPreferences(ctx).getString(EMAIL, "")
+    fun getEmail(app: Application): String {
+        return getSharedPreferences(app).getString(EMAIL, "")
     }
 
-    fun getPassword(ctx: Context): String {
-        return getSharedPreferences(ctx).getString(PASSWORD, "")
+    fun getPassword(app: Application): String {
+        return getSharedPreferences(app).getString(PASSWORD, "")
     }
 }
