@@ -9,6 +9,8 @@ import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
 import com.pongmania.konanov.adapter.PlayerMainAdapter
 import com.pongmania.konanov.api.PongManiaApi
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import javax.inject.Inject
 
@@ -30,7 +32,10 @@ class ScoreBoardActivity : AppCompatActivity() {
     }
 
     private fun initialise() {
-        retrofit.create(PongManiaApi::class.java).getPlayers().subscribe({ result ->
+        retrofit.create(PongManiaApi::class.java).getPlayers()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
             Log.d("Result", "User with id ${result[0].id} received")
             playersList = findViewById(R.id.playersList)
             val adapter = PlayerMainAdapter(this, ArrayList(result))

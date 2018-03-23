@@ -11,11 +11,9 @@ data class Player(val id: String,
                       val lastName: String,
                       val password: String)
 
-    class Rating {
-        val rating: String? = null
-        val ratingDeviation: String? = null
-        val volatility: String? = null
-    }
+    class Rating(val rating: String,
+                 val ratingDeviation: String,
+                 val volatility: String)
 
     private enum class Status {
         ACTIVE, PASSIVE
