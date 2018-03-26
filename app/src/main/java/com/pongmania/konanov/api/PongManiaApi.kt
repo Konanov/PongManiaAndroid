@@ -10,9 +10,9 @@ import retrofit2.http.POST
 interface PongManiaApi {
 
     @GET("player/all")
-    fun getPlayers(): Flowable<List<Player>>
+    fun getPlayers(): Observable<List<Player>>
 
     @POST("registration")
-    fun createUser(@Body credentials: Player.Credentials): Observable<String>
+    fun createUser(@Body credentials: Player.Credentials1): Observable<String>
 
 }

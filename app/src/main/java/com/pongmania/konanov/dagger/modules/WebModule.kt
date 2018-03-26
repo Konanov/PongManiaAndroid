@@ -3,6 +3,7 @@ package com.pongmania.konanov.dagger.modules
 import android.app.Application
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
+import com.pongmania.konanov.interceptors.BasicAuthInterceptor
 import com.pongmania.konanov.util.CredentialsPreference
 import dagger.Module
 import dagger.Provides
@@ -30,17 +31,14 @@ class WebModule(private val app: Application) {
         val cache = Cache(app.cacheDir, cacheSize)
 
         val gsonBuilder = GsonBuilder()
-        gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
         val builder =  gsonBuilder.create()!!
 
         val client = OkHttpClient.Builder()
-
-                //.addInterceptor(BasicAuthInterceptor(
-                //        CredentialsPreference.getEmail(app),
-                //        CredentialsPreference.getPassword(app))
-                //)
+                .addInterceptor(BasicAuthInterceptor(
+                        CredentialsPreference.getEmail(app),
+                        CredentialsPreference.getPassword(app))
+                )
         client.cache(cache)
-                .authenticator(authenticator())
         val okHttpClient = client.build()!!
 
         return Retrofit.Builder()
@@ -49,21 +47,5 @@ class WebModule(private val app: Application) {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
                 .build()!!
-    }
-
-    private fun authenticator(): Authenticator {
-        return Authenticator { _, response ->
-            if (response.request().header("Authorization") != null) {
-                return@Authenticator null // Give up, we've already attempted to authenticate.
-            }
-
-            println("Authenticating for response: $response")
-            System.out.println("Challenges: " + response.challenges())
-            val credential = Credentials.basic(CredentialsPreference.getEmail(app),
-                    CredentialsPreference.getPassword(app))
-            response.request().newBuilder()
-                    .header("Authorization", credential)
-                    .build()
-        }
     }
 }
