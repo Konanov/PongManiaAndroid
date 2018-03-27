@@ -46,6 +46,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.AssignLeagueActivity"
+            android:label="@string/scoreBoard">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

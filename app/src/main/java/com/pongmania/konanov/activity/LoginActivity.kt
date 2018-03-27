@@ -12,8 +12,14 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
+import com.pongmania.konanov.api.PongManiaApi
 import com.pongmania.konanov.util.CredentialsPreference
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import retrofit2.Retrofit
+import javax.inject.Inject
 
 /**
  * A login screen that offers login via email/password.
@@ -37,11 +43,16 @@ class LoginActivity : AppCompatActivity() {
     private var btnCreateAccount: Button? = null
     private var mProgressBar: ProgressDialog? = null
 
+    //retrofit
+    @Inject
+    lateinit var retrofit: Retrofit
+
     //FireBase references
     private var mAuth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (application as PongMania).webComponent.inject(this)
         if (noPreferences()) {
             setContentView(R.layout.activity_login)
             initialise()
@@ -117,8 +128,22 @@ class LoginActivity : AppCompatActivity() {
             CredentialsPreference.getPassword(this.application).isEmpty()
 
     private fun updateUI() {
-        val intent = Intent(this@LoginActivity, ScoreBoardActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
+        retrofit.create(PongManiaApi::class.java)
+                .countLeaguePlayers(CredentialsPreference.getEmail(this.application))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    run {
+                        if (result.compareTo(0) == 0) {
+                            val intent = Intent(this@LoginActivity, AssignLeagueActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        } else {
+                            val intent = Intent(this@LoginActivity, ScoreBoardActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        }
+                    }
+                })
     }
 }

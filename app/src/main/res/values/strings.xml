@@ -10,8 +10,12 @@
     <string name="etEmail">etEmail</string>
     <string name="etPassword">etPassword</string>
     <string name="scoreBoard">Score Board</string>
+    <string name="assignLeague">Assign League</string>
     <string name="thumbnail">Player Icon</string>
     <string name="rating">Рейтинг</string>
     <string name="rating_deviation">Отклонение рейтинга</string>
     <string name="user_name_title">Пользователь</string>
+    <string name="juniorLeague">Junior</string>
+    <string name="middleLeague">Middle</string>
+    <string name="proLeague">Pro</string>
 </resources>

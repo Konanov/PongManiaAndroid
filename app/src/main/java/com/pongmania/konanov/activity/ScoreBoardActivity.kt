@@ -25,7 +25,7 @@ class ScoreBoardActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.score_board)
+        setContentView(R.layout.activity_score_board)
         (application as PongMania).webComponent.inject(this)
 
         initialise()
