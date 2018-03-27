@@ -104,7 +104,7 @@ class CreateAccountActivity: AppCompatActivity() {
                             currentUserDb.child("lastName").setValue(lastName)
 
                             val api = retrofit.create(PongManiaApi::class.java)
-                            api.createUser(Player.Credentials1(email!!, firstName!!, lastName!!, password!!))
+                            api.createUser(Player.Credentials(email!!, firstName!!, lastName!!, password!!))
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribeOn(Schedulers.io())
                                     .subscribe({

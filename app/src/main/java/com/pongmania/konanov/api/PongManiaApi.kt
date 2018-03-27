@@ -1,7 +1,6 @@
 package com.pongmania.konanov.api
 
 import com.pongmania.konanov.model.Player
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -13,6 +12,6 @@ interface PongManiaApi {
     fun getPlayers(): Observable<List<Player>>
 
     @POST("registration")
-    fun createUser(@Body credentials: Player.Credentials1): Observable<String>
+    fun createUser(@Body credentials: Player.Credentials): Observable<String>
 
 }
