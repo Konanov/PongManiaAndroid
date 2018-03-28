@@ -1,5 +1,6 @@
 package com.pongmania.konanov.dagger.components
 
+import com.pongmania.konanov.activity.AssignLeagueActivity
 import com.pongmania.konanov.activity.LoginActivity
 import com.pongmania.konanov.activity.ScoreBoardActivity
 import com.pongmania.konanov.dagger.modules.WebModule
@@ -12,4 +13,5 @@ import javax.inject.Singleton
 interface WebComponent {
     fun inject(activity: ScoreBoardActivity)
     fun inject(activity: LoginActivity)
+    fun inject(activity: AssignLeagueActivity)
 }

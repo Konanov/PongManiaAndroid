@@ -18,4 +18,5 @@
     <string name="juniorLeague">Junior</string>
     <string name="middleLeague">Middle</string>
     <string name="proLeague">Pro</string>
+    <string name="button_join_league">Join</string>
 </resources>

@@ -134,6 +134,7 @@ class LoginActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     run {
+
                         if (result.compareTo(0) == 0) {
                             val intent = Intent(this@LoginActivity, AssignLeagueActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

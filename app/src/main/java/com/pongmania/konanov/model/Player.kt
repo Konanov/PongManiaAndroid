@@ -7,9 +7,9 @@ data class Player(val id: String,
     private val points: Double = 0.toDouble()
 
     data class Credentials(val email: String,
-                           val firstName: String,
-                           val lastName: String,
-                           val password: String)
+                           val firstName: String? = null,
+                           val lastName: String? = null,
+                           val password: String? = null)
 
     data class Rating(val rating: String,
                  val ratingDeviation: String,

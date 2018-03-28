@@ -21,4 +21,7 @@ interface PongManiaApi {
     @POST("registration")
     fun createUser(@Body credentials: Player.Credentials): Observable<String>
 
+    @POST("league/{type}/assign")
+    fun assignLeague(@Path("type") type: String, @Body credentials: Player.Credentials): Observable<String>
+
 }

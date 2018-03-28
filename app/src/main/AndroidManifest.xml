@@ -48,7 +48,7 @@
 
         <activity
             android:name=".activity.AssignLeagueActivity"
-            android:label="@string/scoreBoard">
+            android:label="@string/assignLeague">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
