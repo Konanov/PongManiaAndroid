@@ -5,13 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.TextView
 import com.pongmania.konanov.R
 import com.pongmania.konanov.model.Player
 import com.squareup.picasso.Picasso
-import java.io.File
 
 class PlayerMainAdapter(private val context: Context,
                         private val dataSource: ArrayList<Player>) : BaseAdapter() {

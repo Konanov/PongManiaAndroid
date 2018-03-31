@@ -1,6 +1,7 @@
 package com.pongmania.konanov.api
 
 import com.pongmania.konanov.model.Player
+import com.pongmania.konanov.model.PublicLeagueType
 import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET

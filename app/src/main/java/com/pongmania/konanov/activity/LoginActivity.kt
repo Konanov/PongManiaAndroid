@@ -57,6 +57,8 @@ class LoginActivity : AppCompatActivity() {
             setContentView(R.layout.activity_login)
             initialise()
         } else {
+            email = CredentialsPreference.getEmail(this.application)
+            password = CredentialsPreference.getPassword(this.application)
             updateUI()
             this.finish()
         }
@@ -107,7 +109,7 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with signed-in user information
                         Log.d(TAG, "signInWithEmail:success")
-                        updateUI()
+                        updateUI(email!!)
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.e(TAG, "signInWithEmail:failure", task.exception)
@@ -128,13 +130,36 @@ class LoginActivity : AppCompatActivity() {
             CredentialsPreference.getPassword(this.application).isEmpty()
 
     private fun updateUI() {
+        mProgressBar = ProgressDialog(this)
+
+        mAuth = FirebaseAuth.getInstance()
+        trySignIn()
         retrofit.create(PongManiaApi::class.java)
                 .countLeaguePlayers(CredentialsPreference.getEmail(this.application))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
                     run {
+                        if (result.compareTo(0) == 0) {
+                            val intent = Intent(this@LoginActivity, AssignLeagueActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        } else {
+                            val intent = Intent(this@LoginActivity, ScoreBoardActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        }
+                    }
+                })
+    }
 
+    private fun updateUI(email: String) {
+        retrofit.create(PongManiaApi::class.java)
+                .countLeaguePlayers(email)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    run {
                         if (result.compareTo(0) == 0) {
                             val intent = Intent(this@LoginActivity, AssignLeagueActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

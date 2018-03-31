@@ -9,6 +9,7 @@ import android.widget.TabHost
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.api.PongManiaApi
 import com.pongmania.konanov.model.Player
+import com.pongmania.konanov.model.PublicLeagueType
 import com.pongmania.konanov.util.CredentialsPreference
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -41,15 +42,15 @@ class AssignLeagueActivity : AppCompatActivity() {
         tabHost.setup()
 
         juniorButton.setOnClickListener {
-            assignLeague("Junior")
+            assignLeague(PublicLeagueType.JUNIOR.name)
         }
 
         middleButton.setOnClickListener {
-            assignLeague("Middle")
+            assignLeague(PublicLeagueType.MIDDLE.name)
         }
 
         proButton.setOnClickListener {
-            assignLeague("Pro")
+            assignLeague(PublicLeagueType.PRO.name)
         }
 
         val tabSpec: TabHost.TabSpec = tabHost.newTabSpec("tag1")
