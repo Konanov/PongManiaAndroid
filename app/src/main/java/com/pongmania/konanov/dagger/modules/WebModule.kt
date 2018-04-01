@@ -33,11 +33,7 @@ class WebModule(private val app: Application) {
         val gsonBuilder = GsonBuilder()
         val builder =  gsonBuilder.create()!!
 
-        val client = OkHttpClient.Builder()
-                .addInterceptor(BasicAuthInterceptor(
-                        CredentialsPreference.getEmail(app),
-                        CredentialsPreference.getPassword(app))
-                )
+        val client = OkHttpClient.Builder().addInterceptor(BasicAuthInterceptor(this.app))
         client.cache(cache)
         val okHttpClient = client.build()!!
 

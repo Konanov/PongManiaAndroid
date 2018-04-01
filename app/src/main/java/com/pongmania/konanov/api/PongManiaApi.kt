@@ -1,7 +1,7 @@
 package com.pongmania.konanov.api
 
 import com.pongmania.konanov.model.Player
-import com.pongmania.konanov.model.PublicLeagueType
+import com.pongmania.konanov.model.PublicLeague
 import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -22,7 +22,11 @@ interface PongManiaApi {
     @POST("registration")
     fun createUser(@Body credentials: Player.Credentials): Observable<String>
 
+    @GET("player/{email}/has/league")
+    fun playerHasLeague(@Path("email") email: String): Observable<Boolean>
+
     @POST("league/{type}/assign")
-    fun assignLeague(@Path("type") type: String, @Body credentials: Player.Credentials): Observable<String>
+    fun assignLeague(@Path("type") type: String,
+                     @Body credentials: Player.Credentials): Observable<PublicLeague>
 
 }

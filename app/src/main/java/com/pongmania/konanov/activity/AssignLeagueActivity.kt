@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import com.pongmania.konanov.R
 import android.widget.TabHost
+import android.widget.Toast
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.api.PongManiaApi
 import com.pongmania.konanov.model.Player
@@ -68,16 +69,17 @@ class AssignLeagueActivity : AppCompatActivity() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    run {
-                        if (result.isNotEmpty()) {
+                        Toast.makeText(this, result.type.name, Toast.LENGTH_LONG).show()
                             startActivity(Intent(this@AssignLeagueActivity,
                                     ScoreBoardActivity::class.java))
-                        }
-                    }
+                }, {error ->
+                        Toast.makeText(this, "Error while linking league: "
+                                + error.message, Toast.LENGTH_SHORT).show()
                 })
     }
 
-    private fun createTab(tabNumber: Int, indicator: String, tabSpec: TabHost.TabSpec, tabHost: TabHost) {
+    private fun createTab(tabNumber: Int, indicator: String,
+                          tabSpec: TabHost.TabSpec, tabHost: TabHost) {
         tabSpec.setContent(tabNumber)
         tabSpec.setIndicator(indicator)
         tabHost.addTab(tabSpec)
