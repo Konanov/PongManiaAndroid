@@ -19,7 +19,7 @@ class PlayerMainAdapter(private val context: Context,
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val rowView = inflater.inflate(R.layout.player_row, parent, false)
         // Get title element
-        val avatar = rowView.findViewById(R.id.recipe_list_thumbnail) as ImageView
+        val avatar = rowView.findViewById(R.id.profile_image) as ImageView
         val picasso = Picasso.get()
         picasso.isLoggingEnabled = true
         picasso.load(R.drawable.placeholder).into(avatar)

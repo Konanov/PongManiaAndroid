@@ -9,8 +9,8 @@
     <string name="create_act">Create Account</string>
     <string name="etEmail">etEmail</string>
     <string name="etPassword">etPassword</string>
-    <string name="scoreBoard">Score Board</string>
-    <string name="assignLeague">Assign League</string>
+    <string name="scoreBoard">Лига</string>
+    <string name="assignLeague">Вступить в лигу</string>
     <string name="thumbnail">Player Icon</string>
     <string name="rating">Рейтинг</string>
     <string name="rating_deviation">Отклонение рейтинга</string>

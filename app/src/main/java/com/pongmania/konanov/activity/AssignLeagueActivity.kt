@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.api.PongManiaApi
 import com.pongmania.konanov.model.Player
+import com.pongmania.konanov.model.PublicLeague
 import com.pongmania.konanov.model.PublicLeagueType
 import com.pongmania.konanov.util.CredentialsPreference
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -70,13 +71,24 @@ class AssignLeagueActivity : AppCompatActivity() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                        Toast.makeText(this, result.type.value, Toast.LENGTH_LONG).show()
-                            startActivity(Intent(this@AssignLeagueActivity,
-                                    ScoreBoardActivity::class.java))
+                    startScoreBoardActivity(result)
                 }, {error ->
-                        Toast.makeText(this, "Error while linking league: "
-                                + error.message, Toast.LENGTH_SHORT).show()
+                    leagueAssigningError(error)
                 })
+    }
+
+    private fun leagueAssigningError(error: Throwable) {
+        Toast.makeText(this, "Попытка вступить в лигу провалилась: "
+                + error.message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun startScoreBoardActivity(result: PublicLeague) {
+        Toast.makeText(this, result.type.value, Toast.LENGTH_LONG).show()
+        intent = Intent(this@AssignLeagueActivity,
+                ScoreBoardActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        this.finish()
     }
 
     private fun createTab(tabNumber: Int, indicator: String,

@@ -10,7 +10,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.pongmania.konanov.PongMania
@@ -20,6 +23,7 @@ import com.pongmania.konanov.model.Player
 import com.pongmania.konanov.util.CredentialsPreference
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import javax.inject.Inject
 
@@ -59,12 +63,8 @@ class CreateAccountActivity: AppCompatActivity() {
     }
 
     private fun initialise() {
-        uiElementsSetUp()
-
-        mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference!!.child("Users")
-        mAuth = FirebaseAuth.getInstance()
-
+        initialiseUI()
+        initialiseFireBase()
         btnCreateAccount!!.setOnClickListener { createNewAccount() }
     }
 
@@ -77,44 +77,52 @@ class CreateAccountActivity: AppCompatActivity() {
                         mProgressBar!!.hide()
 
                         if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user'PONGMANIA_API_BASE_URL information
                             Log.d(TAG, "createUserWithEmail:success")
 
                             val userId = mAuth!!.currentUser!!.uid
-
                             verifyEmail()
-
                             updateUserProfileInformation(userId)
-
-                            retrofit.create(PongManiaApi::class.java)
-                                    .createUser(Player.Credentials(email!!, firstName!!, lastName!!, password!!))
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribeOn(Schedulers.io())
-                                    .subscribe({
-                                        result ->
-                                        Log.d("Result", "User created\n${result.string()}.")
-                                        Toast.makeText(this, "Пользователь зарегистрирован",
-                                                Toast.LENGTH_SHORT).show()
-                                    }, {
-                                        error ->
-                                        Log.d("ERROR", "Request resulted in error\n${error.printStackTrace()}")
-                                        Toast.makeText(this, "Ошибка при создании пользователя",
-                                                Toast.LENGTH_SHORT).show()
-                                    })
-
+                            tryCreateUser()
                             CredentialsPreference.setCredentials(this.application, email!!, password!!)
-                            updateUserInfoAndUI()
+
+                            startLoginActivity()
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                            Toast.makeText(this@CreateAccountActivity, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show()
+                            errorWhileCreatingUser(task)
                         }
                     }
 
         } else {
             Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun errorWhileCreatingUser(task: Task<AuthResult>) {
+        Log.w(TAG, "createUserWithEmail:failure", task.exception)
+        Toast.makeText(this@CreateAccountActivity, "Ошибка при регистрации пользователя.",
+                Toast.LENGTH_SHORT).show()
+    }
+
+    private fun tryCreateUser() {
+        retrofit.create(PongManiaApi::class.java)
+                .createUser(Player.Credentials(email!!, firstName!!, lastName!!, password!!))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        { result -> userCreated(result) },
+                        { error -> errorWhileCreatingUser(error) }
+                )
+    }
+
+    private fun errorWhileCreatingUser(error: Throwable) {
+        Log.d("ERROR", "Request resulted in error\n${error.printStackTrace()}")
+        Toast.makeText(this, "Ошибка при создании пользователя",
+                Toast.LENGTH_SHORT).show()
+    }
+
+    private fun userCreated(result: ResponseBody) {
+        Log.d("Result", "User created\n${result.string()}.")
+        Toast.makeText(this, "Пользователь зарегистрирован",
+                Toast.LENGTH_SHORT).show()
     }
 
     private fun updateUserProfileInformation(userId: String) {
@@ -130,35 +138,48 @@ class CreateAccountActivity: AppCompatActivity() {
         password = etPassword?.text.toString()
     }
 
-    private fun updateUserInfoAndUI() {
-        //start next activity
-        val intent = Intent(this@CreateAccountActivity, LoginActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivity(intent)
-    }
-
     private fun verifyEmail() {
         val mUser = mAuth!!.currentUser
         mUser!!.sendEmailVerification()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this@CreateAccountActivity,
-                                "Verification email sent to " + mUser.email,
-                                Toast.LENGTH_SHORT).show()
+                        verificationSent(mUser)
                     } else {
-                        Log.e(TAG, "sendEmailVerification", task.exception)
-                        Toast.makeText(this@CreateAccountActivity,
-                                "Failed to send verification email.",
-                                Toast.LENGTH_SHORT).show()
+                        verificationSendingError(task)
                     }
                 }
+    }
+
+    private fun startLoginActivity() {
+        val intent = Intent(this@CreateAccountActivity, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+    }
+
+    private fun verificationSendingError(task: Task<Void>) {
+        Log.e(TAG, "sendEmailVerification", task.exception)
+        Toast.makeText(this@CreateAccountActivity,
+                "Ошибка при попытке послать подтверждение регистрации на почту.",
+                Toast.LENGTH_SHORT).show()
+    }
+
+    private fun verificationSent(mUser: FirebaseUser) {
+        Toast.makeText(this@CreateAccountActivity,
+                "Подтверждение регистрации выслано на " + mUser.email,
+                Toast.LENGTH_SHORT).show()
     }
 
     private fun noMandatoryFieldsEmpty() =
             (!TextUtils.isEmpty(firstName) && !TextUtils.isEmpty(lastName)
                     && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password))
 
-    private fun uiElementsSetUp() {
+    private fun initialiseFireBase() {
+        mDatabase = FirebaseDatabase.getInstance()
+        mDatabaseReference = mDatabase!!.reference!!.child("Users")
+        mAuth = FirebaseAuth.getInstance()
+    }
+
+    private fun initialiseUI() {
         etFirstName = findViewById<View>(R.id.et_first_name) as EditText
         etLastName = findViewById<View>(R.id.et_last_name) as EditText
         etEmail = findViewById<View>(R.id.et_email) as EditText
