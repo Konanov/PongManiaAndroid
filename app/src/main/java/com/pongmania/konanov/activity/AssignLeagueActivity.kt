@@ -32,7 +32,7 @@ class AssignLeagueActivity : AppCompatActivity() {
     }
 
     private fun initialise() {
-        title = "TabHost"
+        title = "Leagues"
 
         val tabHost = findViewById<TabHost>(R.id.tabHost)
 
@@ -42,23 +42,24 @@ class AssignLeagueActivity : AppCompatActivity() {
 
         tabHost.setup()
 
+        val (tabSpec1: TabHost.TabSpec, tabSpec2: TabHost.TabSpec,
+                tabSpec3: TabHost.TabSpec) = initTabSpecs(tabHost)
+
+        createTab(R.id.tab1, "Junior", tabSpec1, tabHost)
+        createTab(R.id.tab2, "Middle", tabSpec2, tabHost)
+        createTab(R.id.tab3, "Pro", tabSpec3, tabHost)
+
         juniorButton.setOnClickListener {
-            assignLeague(PublicLeagueType.JUNIOR.name)
+            assignLeague(PublicLeagueType.JUNIOR.value)
         }
 
         middleButton.setOnClickListener {
-            assignLeague(PublicLeagueType.MIDDLE.name)
+            assignLeague(PublicLeagueType.MIDDLE.value)
         }
 
         proButton.setOnClickListener {
-            assignLeague(PublicLeagueType.PRO.name)
+            assignLeague(PublicLeagueType.PRO.value)
         }
-
-        val tabSpec: TabHost.TabSpec = tabHost.newTabSpec("tag1")
-
-        createTab(R.id.tab1, "Junior", tabSpec, tabHost)
-        createTab(R.id.tab2, "Middle", tabSpec, tabHost)
-        createTab(R.id.tab3, "Pro", tabSpec, tabHost)
 
         tabHost.currentTab = 0
     }
@@ -69,7 +70,7 @@ class AssignLeagueActivity : AppCompatActivity() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                        Toast.makeText(this, result.type.name, Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, result.type.value, Toast.LENGTH_LONG).show()
                             startActivity(Intent(this@AssignLeagueActivity,
                                     ScoreBoardActivity::class.java))
                 }, {error ->
@@ -85,4 +86,10 @@ class AssignLeagueActivity : AppCompatActivity() {
         tabHost.addTab(tabSpec)
     }
 
+    private fun initTabSpecs(tabHost: TabHost): Triple<TabHost.TabSpec, TabHost.TabSpec, TabHost.TabSpec> {
+        val tabSpec1: TabHost.TabSpec = tabHost.newTabSpec("tag1")
+        val tabSpec2: TabHost.TabSpec = tabHost.newTabSpec("tag2")
+        val tabSpec3: TabHost.TabSpec = tabHost.newTabSpec("tag3")
+        return Triple(tabSpec1, tabSpec2, tabSpec3)
+    }
 }

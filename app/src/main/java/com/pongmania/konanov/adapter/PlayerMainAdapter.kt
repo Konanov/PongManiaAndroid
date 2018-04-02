@@ -20,9 +20,9 @@ class PlayerMainAdapter(private val context: Context,
         val rowView = inflater.inflate(R.layout.player_row, parent, false)
         // Get title element
         val avatar = rowView.findViewById(R.id.recipe_list_thumbnail) as ImageView
-        var picasso = Picasso.get()
+        val picasso = Picasso.get()
         picasso.isLoggingEnabled = true
-        picasso.load("http://leo-realty.com.ua/assets/missing_agent-fa85f1d8af2ca785aaaceae27c7670a7ad93bbcee0a3e20f33d37090842c9c06.png").into(avatar)
+        picasso.load(R.drawable.placeholder).into(avatar)
 
         val userNameTitle = rowView.findViewById<View>(R.id.userName_title) as TextView
         val userName = rowView.findViewById<View>(R.id.userName_subtitle) as TextView

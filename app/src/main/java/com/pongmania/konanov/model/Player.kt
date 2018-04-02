@@ -2,7 +2,8 @@ package com.pongmania.konanov.model
 
 data class Player(val id: String,
                   val credentials: Credentials,
-                  val latestRating: Rating) {
+                  val latestRating: Rating,
+                  val publicLeague: PublicLeague) {
     private val status: Status? = null
     private val points: Double = 0.toDouble()
 
