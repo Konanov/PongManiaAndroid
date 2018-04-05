@@ -114,13 +114,13 @@ class CreateAccountActivity: AppCompatActivity() {
     }
 
     private fun errorWhileCreatingUser(error: Throwable) {
-        Log.d("ERROR", "Request resulted in error\n${error.printStackTrace()}")
+        Log.d(TAG, "Request resulted in error\n${error.printStackTrace()}")
         Toast.makeText(this, "Ошибка при создании пользователя",
                 Toast.LENGTH_SHORT).show()
     }
 
     private fun userCreated(result: ResponseBody) {
-        Log.d("Result", "User created\n${result.string()}.")
+        Log.d(TAG, "User created\n${result.string()}.")
         Toast.makeText(this, "Пользователь зарегистрирован",
                 Toast.LENGTH_SHORT).show()
     }

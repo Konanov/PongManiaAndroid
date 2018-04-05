@@ -58,7 +58,7 @@ class ScoreBoardActivity : AppCompatActivity() {
 
     private fun ScoreBoardActivity.findPlayersOfLeague(email: String,
                                                        result: PublicLeague): Disposable? {
-        Log.d("Result", "User with email $email has public league ${result.type}")
+        Log.d(TAG, "User with email $email has public league ${result.type}")
         return api.playersOfLeague(result.type.value)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -74,20 +74,20 @@ class ScoreBoardActivity : AppCompatActivity() {
     }
 
     private fun ScoreBoardActivity.invalidLeagueType(email: String, error: Throwable) {
-        Log.d("Error", "User with email $email has no public league\n"
+        Log.d(TAG, "User with email $email has no public league\n"
                 + "${error.printStackTrace()}")
         Toast.makeText(this, "Не найдена лига с указанным названием",
                 Toast.LENGTH_SHORT).show()
     }
 
     private fun ScoreBoardActivity.playersOfLeagueLoadFailure(error: Throwable) {
-        Log.d("ERROR", "Request resulted in error\n${error.printStackTrace()}")
+        Log.d(TAG, "Request resulted in error\n${error.printStackTrace()}")
         Toast.makeText(this, "Ошибка при загрузке игроков лиги",
                 Toast.LENGTH_SHORT).show()
     }
 
     private fun ScoreBoardActivity.transformPlayerToViewItem(players: List<Player>) {
-        Log.d("Result", "Users of league received. Total count: ${players.size}")
+        Log.d(TAG, "Users of league received. Total count: ${players.size}")
         playersList = findViewById(R.id.playersList)
         val adapter = PlayerMainAdapter(this, ArrayList(players))
         playersList.adapter = adapter
