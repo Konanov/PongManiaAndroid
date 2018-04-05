@@ -1,3 +1,5 @@
 package com.pongmania.konanov.model
 
-data class PublicLeague(val id: String, val type: PublicLeagueType)
+import java.io.Serializable
+
+data class PublicLeague(val id: String, val type: PublicLeagueType): Serializable

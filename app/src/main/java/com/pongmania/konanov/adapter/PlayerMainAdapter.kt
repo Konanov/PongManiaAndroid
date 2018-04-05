@@ -27,8 +27,8 @@ class PlayerMainAdapter(private val context: Context,
         val userNameTitle = rowView.findViewById<View>(R.id.userName_title) as TextView
         val userName = rowView.findViewById<View>(R.id.userName_subtitle) as TextView
         // Get subtitle element
-        val rating = rowView.findViewById<View>(R.id.rating) as TextView
         val ratingTitle = rowView.findViewById<View>(R.id.rating_title) as TextView
+        val rating = rowView.findViewById<View>(R.id.rating) as TextView
 
         val player = getItem(position) as Player
         val playerName = "${player.credentials.firstName} ${player.credentials.lastName}"

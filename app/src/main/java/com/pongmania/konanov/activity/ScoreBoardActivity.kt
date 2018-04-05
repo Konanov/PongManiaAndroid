@@ -1,8 +1,10 @@
 package com.pongmania.konanov.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
 import com.pongmania.konanov.PongMania
@@ -25,7 +27,7 @@ class ScoreBoardActivity : AppCompatActivity() {
     @Inject
     lateinit var retrofit: Retrofit
 
-    lateinit var api: PongManiaApi
+    private lateinit var api: PongManiaApi
 
     private lateinit var playersList: ListView
 
@@ -89,5 +91,14 @@ class ScoreBoardActivity : AppCompatActivity() {
         playersList = findViewById(R.id.playersList)
         val adapter = PlayerMainAdapter(this, ArrayList(players))
         playersList.adapter = adapter
+        playersList.setOnItemClickListener{parent, view, position, id ->
+            run {
+                val player = players[position]
+                intent = Intent(this@ScoreBoardActivity, PlayerProfileActivity::class.java)
+                intent.putExtra("currentPlayer", player)
+                startActivity(intent)
+                //Toast.makeText(this, "Current user: ${players[position].id}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
