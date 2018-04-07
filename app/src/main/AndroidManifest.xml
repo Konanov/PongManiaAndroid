@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pongmania.konanov">
-    <!-- To auto-complete the email text field in the login form with the uPONGMANIA_API_BASE_URLer's emails -->
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -50,6 +50,11 @@
                 <action android:name="android.intent.action.INSERT_OR_EDIT" />
                 <category android:name="android.intent.category.OPENABLE" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.PlayerProfileActivity"
+            android:label="@string/playerProfile">
         </activity>
 
     </application>
