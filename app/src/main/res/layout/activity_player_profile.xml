@@ -2,4 +2,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image_main"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:civ_border_color="@color/common_google_signin_btn_text_light"
+        app:civ_border_width="1dp"/>
+
+    <TextView
+        android:id="@+id/playerRating"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="150dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="490dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:hint="@string/playerRating"/>
+    <TextView
+        android:id="@+id/playerRatingValue"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="270dp"
+        android:layout_marginBottom="490dp"
+        android:gravity="center"
+        android:hint="@string/playerRating"/>
 </RelativeLayout>
