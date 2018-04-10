@@ -3,10 +3,12 @@ package com.pongmania.konanov.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.widget.AdapterView
-import android.widget.ListView
+import android.view.View
 import android.widget.Toast
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
 import com.pongmania.konanov.adapter.PlayerMainAdapter
@@ -24,18 +26,16 @@ class ScoreBoardActivity : AppCompatActivity() {
 
     private val TAG = "ScoreBoardActivity"
 
-    @Inject
-    lateinit var retrofit: Retrofit
-
+    @Inject lateinit var retrofit: Retrofit
+    @BindView(R.id.playersList) lateinit var playersList: RecyclerView
     private lateinit var api: PongManiaApi
-
-    private lateinit var playersList: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_score_board)
         (application as PongMania).webComponent.inject(this)
         api = retrofit.create(PongManiaApi::class.java)
+        ButterKnife.bind(this)
 
         initialise()
     }
@@ -88,17 +88,15 @@ class ScoreBoardActivity : AppCompatActivity() {
 
     private fun ScoreBoardActivity.transformPlayerToViewItem(players: List<Player>) {
         Log.d(TAG, "Users of league received. Total count: ${players.size}")
-        playersList = findViewById(R.id.playersList)
-        val adapter = PlayerMainAdapter(this, ArrayList(players))
+
+        val listener = { _: View, position: Int -> {
+            val player = players[position]
+            intent = Intent(this@ScoreBoardActivity, PlayerProfileActivity::class.java)
+            intent.putExtra("currentPlayer", player)
+            startActivity(intent)
+        }} as PlayerMainAdapter.ViewHolderClickListener
+
+        val adapter = PlayerMainAdapter(this, ArrayList(players), listener)
         playersList.adapter = adapter
-        playersList.setOnItemClickListener{parent, view, position, id ->
-            run {
-                val player = players[position]
-                intent = Intent(this@ScoreBoardActivity, PlayerProfileActivity::class.java)
-                intent.putExtra("currentPlayer", player)
-                startActivity(intent)
-                //Toast.makeText(this, "Current user: ${players[position].id}", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 }

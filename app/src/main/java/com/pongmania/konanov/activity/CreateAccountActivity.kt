@@ -1,15 +1,17 @@
 package com.pongmania.konanov.activity
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.OnClick
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -30,60 +32,59 @@ import javax.inject.Inject
 
 class CreateAccountActivity: AppCompatActivity() {
 
-    //UI elements
-    private var etFirstName: EditText? = null
-    private var etLastName: EditText? = null
-    private var etEmail: EditText? = null
-    private var etPassword: EditText? = null
-    private var btnCreateAccount: Button? = null
-    private var mProgressBar: ProgressDialog? = null
-
-    //Firebase references
-    private var mDatabaseReference: DatabaseReference? = null
-    private var mDatabase: FirebaseDatabase? = null
-    private var mAuth: FirebaseAuth? = null
-
     private val TAG = "CreateAccountActivity"
 
+    @BindView(R.id.et_first_name) lateinit var etFirstName: EditText
+    @BindView(R.id.et_last_name) lateinit var etLastName: EditText
+    @BindView(R.id.create_email) lateinit var createEmail: EditText
+    @BindView(R.id.et_password) lateinit var etPassword: EditText
+    private lateinit var mProgressBar: ProgressBar
+
+    //Firebase references
+    private lateinit var mDatabaseReference: DatabaseReference
+    private lateinit var mDatabase: FirebaseDatabase
+
+    private lateinit var mAuth: FirebaseAuth
+
     //global variables
-    private var firstName: String? = null
-    private var lastName: String? = null
-    private var email: String? = null
-    private var password: String? = null
+    private lateinit var firstName: String
+    private lateinit var lastName: String
+    lateinit var email: String
+    lateinit var password: String
 
     @Inject
     lateinit var retrofit: Retrofit
+
+    @OnClick(R.id.btn_register)
+    fun registerUser() {
+        createNewAccount()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
         (application as PongMania).webComponent.inject(this)
+        ButterKnife.bind(this)
+        mProgressBar = ProgressBar(this)
 
-        initialise()
-    }
-
-    private fun initialise() {
-        initialiseUI()
         initialiseFireBase()
-        btnCreateAccount!!.setOnClickListener { createNewAccount() }
     }
 
     private fun createNewAccount() {
         extractMandatoryFields()
         if (noMandatoryFieldsEmpty()) {
-            mAuth!!
-                    .createUserWithEmailAndPassword(email!!, password!!)
+            mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this) { task ->
-                        mProgressBar!!.hide()
+                        mProgressBar.visibility = View.GONE
 
                         if (task.isSuccessful) {
                             Log.d(TAG, "createUserWithEmail:success")
 
-                            val userId = mAuth!!.currentUser!!.uid
+                            val userId = mAuth.currentUser!!.uid
                             verifyEmail()
                             updateUserProfileInformation(userId)
                             tryCreateUser()
-                            CredentialsPreference.setCredentials(this.application, email!!, password!!)
+                            CredentialsPreference.setCredentials(this.application, email, password)
 
                             startLoginActivity()
                         } else {
@@ -104,7 +105,7 @@ class CreateAccountActivity: AppCompatActivity() {
 
     private fun tryCreateUser() {
         retrofit.create(PongManiaApi::class.java)
-                .createUser(Player.Credentials(email!!, firstName!!, lastName!!, password!!))
+                .createUser(Player.Credentials(email, firstName, lastName, password))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
@@ -126,20 +127,20 @@ class CreateAccountActivity: AppCompatActivity() {
     }
 
     private fun updateUserProfileInformation(userId: String) {
-        val currentUserDb = mDatabaseReference!!.child(userId)
+        val currentUserDb = mDatabaseReference.child(userId)
         currentUserDb.child("firstName").setValue(firstName)
         currentUserDb.child("lastName").setValue(lastName)
     }
 
     private fun extractMandatoryFields() {
-        firstName = etFirstName?.text.toString()
-        lastName = etLastName?.text.toString()
-        email = etEmail?.text.toString()
-        password = etPassword?.text.toString()
+        firstName = etFirstName.text.toString()
+        lastName = etLastName.text.toString()
+        email = createEmail.text.toString()
+        password = etPassword.text.toString()
     }
 
     private fun verifyEmail() {
-        val mUser = mAuth!!.currentUser
+        val mUser = mAuth.currentUser
         mUser!!.sendEmailVerification()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
@@ -175,16 +176,7 @@ class CreateAccountActivity: AppCompatActivity() {
 
     private fun initialiseFireBase() {
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference!!.child("Users")
+        mDatabaseReference = mDatabase.reference!!.child("Users")
         mAuth = FirebaseAuth.getInstance()
-    }
-
-    private fun initialiseUI() {
-        etFirstName = findViewById<View>(R.id.et_first_name) as EditText
-        etLastName = findViewById<View>(R.id.et_last_name) as EditText
-        etEmail = findViewById<View>(R.id.et_email) as EditText
-        etPassword = findViewById<View>(R.id.et_password) as EditText
-        btnCreateAccount = findViewById<View>(R.id.btn_register) as Button
-        mProgressBar = ProgressDialog(this)
     }
 }

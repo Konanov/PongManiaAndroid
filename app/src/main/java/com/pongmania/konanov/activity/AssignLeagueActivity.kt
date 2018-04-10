@@ -3,11 +3,13 @@ package com.pongmania.konanov.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Button
-import com.pongmania.konanov.R
 import android.widget.TabHost
 import android.widget.Toast
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.OnClick
 import com.pongmania.konanov.PongMania
+import com.pongmania.konanov.R
 import com.pongmania.konanov.api.PongManiaApi
 import com.pongmania.konanov.model.Player
 import com.pongmania.konanov.model.PublicLeague
@@ -24,9 +26,30 @@ class AssignLeagueActivity : AppCompatActivity() {
     @Inject
     lateinit var retrofit: Retrofit
 
+    @BindView(R.id.tabHost)
+    lateinit var tabView: TabHost
+
+    @OnClick(R.id.juniorLeagueButton)
+    fun handleJun() {
+        assignLeague(PublicLeagueType.JUNIOR.value)
+    }
+
+
+    @OnClick(R.id.middleLeagueButton)
+    fun handleMid() {
+        assignLeague(PublicLeagueType.JUNIOR.value)
+    }
+
+
+    @OnClick(R.id.proLeagueButton)
+    fun handlePro() {
+        assignLeague(PublicLeagueType.JUNIOR.value)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_assign_league)
+        ButterKnife.bind(this)
         (application as PongMania).webComponent.inject(this)
 
         initialise()
@@ -35,34 +58,16 @@ class AssignLeagueActivity : AppCompatActivity() {
     private fun initialise() {
         title = "Leagues"
 
-        val tabHost = findViewById<TabHost>(R.id.tabHost)
-
-        val juniorButton = findViewById<Button>(R.id.juniorLeagueButton)
-        val middleButton = findViewById<Button>(R.id.middleLeagueButton)
-        val proButton = findViewById<Button>(R.id.proLeagueButton)
-
-        tabHost.setup()
+        tabView.setup()
 
         val (tabSpec1: TabHost.TabSpec, tabSpec2: TabHost.TabSpec,
-                tabSpec3: TabHost.TabSpec) = initTabSpecs(tabHost)
+                tabSpec3: TabHost.TabSpec) = initTabSpecs(tabView)
 
-        createTab(R.id.tab1, "Junior", tabSpec1, tabHost)
-        createTab(R.id.tab2, "Middle", tabSpec2, tabHost)
-        createTab(R.id.tab3, "Pro", tabSpec3, tabHost)
+        createTab(R.id.tab1, "Junior", tabSpec1, tabView)
+        createTab(R.id.tab2, "Middle", tabSpec2, tabView)
+        createTab(R.id.tab3, "Pro", tabSpec3, tabView)
 
-        juniorButton.setOnClickListener {
-            assignLeague(PublicLeagueType.JUNIOR.value)
-        }
-
-        middleButton.setOnClickListener {
-            assignLeague(PublicLeagueType.MIDDLE.value)
-        }
-
-        proButton.setOnClickListener {
-            assignLeague(PublicLeagueType.PRO.value)
-        }
-
-        tabHost.currentTab = 0
+        tabView.currentTab = 0
     }
 
     private fun assignLeague(type: String) {
@@ -98,7 +103,7 @@ class AssignLeagueActivity : AppCompatActivity() {
         tabHost.addTab(tabSpec)
     }
 
-    private fun initTabSpecs(tabHost: TabHost): Triple<TabHost.TabSpec, TabHost.TabSpec, TabHost.TabSpec> {
+    private fun initTabSpecs(tabHost: TabHost):Triple<TabHost.TabSpec, TabHost.TabSpec, TabHost.TabSpec> {
         val tabSpec1: TabHost.TabSpec = tabHost.newTabSpec("tag1")
         val tabSpec2: TabHost.TabSpec = tabHost.newTabSpec("tag2")
         val tabSpec3: TabHost.TabSpec = tabHost.newTabSpec("tag3")

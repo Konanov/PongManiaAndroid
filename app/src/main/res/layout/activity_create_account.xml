@@ -19,7 +19,7 @@
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/et_email"
+        android:id="@+id/create_email"
         style="@style/viewCustom"
         android:layout_below="@id/et_last_name"
         android:ems="10"
@@ -29,7 +29,7 @@
     <EditText
         android:id="@+id/et_password"
         style="@style/viewCustom"
-        android:layout_below="@id/et_email"
+        android:layout_below="@id/create_email"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword" />

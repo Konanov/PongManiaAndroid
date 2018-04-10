@@ -1,16 +1,15 @@
 package com.pongmania.konanov.activity
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.OnClick
 import com.google.firebase.auth.FirebaseAuth
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
@@ -31,83 +30,67 @@ class LoginActivity : AppCompatActivity() {
      */
     private val TAG = "LoginActivity"
 
-    //global variables
-    private var email: String? = null
-    private var password: String? = null
+    private lateinit var email: String
+    private lateinit var password: String
 
-    //UI elements
-    private var tvForgotPassword: TextView? = null
-    private var etEmail: EditText? = null
-    private var etPassword: EditText? = null
-    private var btnLogin: Button? = null
-    private var btnCreateAccount: Button? = null
-    private var mProgressBar: ProgressDialog? = null
+    @BindView(R.id.login_email) lateinit var loginEmail: EditText
+    @BindView(R.id.et_password) lateinit var etPassword: EditText
+    private lateinit var mProgressBar: ProgressBar
 
-    //retrofit
     @Inject
     lateinit var retrofit: Retrofit
 
-    //FireBase references
-    private var mAuth: FirebaseAuth? = null
+    private lateinit var mAuth: FirebaseAuth
+
+    @OnClick(R.id.btn_login)
+    fun login() {
+        loginUser()
+    }
+
+    @OnClick(R.id.tv_forgot_password)
+    fun forgotPassword() {
+        startActivity(Intent(this@LoginActivity, LoginActivity::class.java))
+    }
+
+    @OnClick(R.id.btn_register_account)
+    fun registerAccount() {
+        startActivity(Intent(this@LoginActivity, CreateAccountActivity::class.java))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (application as PongMania).webComponent.inject(this)
 
-        mProgressBar = ProgressDialog(this)
+        mProgressBar = ProgressBar(this)
         mAuth = FirebaseAuth.getInstance()
 
         if (noPreferences()) {
             setContentView(R.layout.activity_login)
-            initialise()
+            ButterKnife.bind(this)
         } else {
             email = CredentialsPreference.getEmail(this.application)
             password = CredentialsPreference.getPassword(this.application)
             trySignIn()
-            this.finish()
         }
     }
 
-    private fun initialise() {
-        tvForgotPassword = findViewById<View>(R.id.tv_forgot_password) as TextView
-        etEmail = findViewById<View>(R.id.et_email) as EditText
-        etPassword = findViewById<View>(R.id.et_password) as EditText
-        btnLogin = findViewById<View>(R.id.btn_login) as Button
-        btnCreateAccount = findViewById<View>(R.id.btn_register_account) as Button
-
-        tvForgotPassword!!
-                .setOnClickListener { startActivity(Intent(this@LoginActivity,
-                        LoginActivity::class.java)) }
-
-        btnCreateAccount!!
-                .setOnClickListener { startActivity(Intent(this@LoginActivity,
-                        CreateAccountActivity::class.java)) }
-
-        btnLogin!!.setOnClickListener { loginUser() }
-    }
-
-
     private fun loginUser() {
-
-        email = etEmail?.text.toString()
-        password = etPassword?.text.toString()
-
+        email = loginEmail.text.toString()
+        password = etPassword.text.toString()
             if (mandatoryFieldsPresent()) {
-                CredentialsPreference.setCredentials(this.application, email!!, password!!)
-                showProgressBar()
+                CredentialsPreference.setCredentials(this.application, email, password)
+                mProgressBar.visibility = View.VISIBLE
                 Log.d(TAG, "Logging in user.")
                 trySignIn()
             } else {
-                Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Заполните все поля формы", Toast.LENGTH_SHORT).show()
             }
     }
 
     private fun trySignIn() {
-        mAuth!!.signInWithEmailAndPassword(email!!, password!!)
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
-
-                    mProgressBar!!.hide()
-
+                    mProgressBar.visibility = View.GONE
                     if (task.isSuccessful) {
                         // Sign in success, update UI with signed-in user information
                         Log.d(TAG, "signInWithEmail:success")
@@ -121,32 +104,44 @@ class LoginActivity : AppCompatActivity() {
                 }
     }
 
-    private fun showProgressBar() {
-        mProgressBar!!.setMessage("Registering User...")
-        mProgressBar!!.show()
-    }
-
     private fun mandatoryFieldsPresent() = !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)
 
     private fun noPreferences() = CredentialsPreference.getEmail(this.application).isEmpty() ||
             CredentialsPreference.getPassword(this.application).isEmpty()
 
     private fun chooseNextActivity() {
-        retrofit.create(PongManiaApi::class.java).playerHasLeague(email!!)
+        retrofit.create(PongManiaApi::class.java).playerHasLeague(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                        if (!result) {
-                            val intent = Intent(this@LoginActivity,
-                                    AssignLeagueActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                        } else {
-                            val intent = Intent(this@LoginActivity,
-                                    ScoreBoardActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                        }
+                .subscribe({ result -> decideOnResult(result)
+                }, {error ->
+                    run {
+                        Log.d(TAG, "Невозможно определить, состоит ли игрок в лиге")
+                        Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
+                    }
                 })
+    }
+
+    private fun decideOnResult(result: Boolean) {
+        if (!result) {
+            assignLeague()
+        } else {
+            showScoreboard()
+        }
+    }
+
+    private fun showScoreboard() {
+        nextActivity(ScoreBoardActivity::class.java)
+    }
+
+    private fun assignLeague() {
+        nextActivity(AssignLeagueActivity::class.java)
+    }
+
+    private fun LoginActivity.nextActivity(clazz: Class<*>) {
+        intent = Intent(this@LoginActivity, clazz)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        this.finish()
     }
 }

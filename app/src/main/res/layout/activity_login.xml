@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/et_email"
+        android:id="@+id/login_email"
         style="@style/viewCustom"
         android:ems="10"
         android:hint="@string/etEmail"
@@ -13,7 +13,7 @@
     <EditText
         android:id="@+id/et_password"
         style="@style/viewCustom"
-        android:layout_below="@id/et_email"
+        android:layout_below="@id/login_email"
         android:ems="10"
         android:hint="@string/etPassword"
         android:inputType="textPassword" />
