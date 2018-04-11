@@ -23,6 +23,7 @@ import javax.inject.Inject
 /**
  * A login screen that offers login via email/password.
  */
+@SuppressWarnings("unused")
 class LoginActivity : AppCompatActivity() {
 
     /**

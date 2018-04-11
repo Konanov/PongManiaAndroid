@@ -1,6 +1,6 @@
 package com.pongmania.konanov.adapter
 
-import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,63 +10,58 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.pongmania.konanov.R
+import com.pongmania.konanov.activity.PlayerProfileActivity
 import com.pongmania.konanov.model.Player
 import com.squareup.picasso.Picasso
 
 
-class PlayerMainAdapter(private val context: Context,
-                        private val dataSource: ArrayList<Player>,
-                        private val listener: ViewHolderClickListener):
+class PlayerMainAdapter(private val players: ArrayList<Player>):
         RecyclerView.Adapter<PlayerMainAdapter.PlayerHolder>() {
 
     @BindView(R.id.profile_image) lateinit var avatar: ImageView
+    @BindView(R.id.userName_title) internal lateinit var userNameTitle: TextView
+    @BindView(R.id.userName_subtitle) lateinit var userName: TextView
+    @BindView(R.id.rating_title) lateinit var ratingTitle: TextView
+    @BindView(R.id.rating) lateinit var rating: TextView
+
+    private lateinit var playerLayout: View
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val rowView = layoutInflater.inflate(R.layout.player_row, parent, false)
-        ButterKnife.bind(this, rowView)
+        playerLayout = layoutInflater.inflate(R.layout.player_row, parent, false)
+        ButterKnife.bind(this, playerLayout)
 
-        return PlayerHolder(rowView, listener)
+        return PlayerHolder(playerLayout, players)
     }
 
     override fun onBindViewHolder(holder: PlayerHolder, position: Int) {
+        setPlayerProperties(position)
+    }
+
+    private fun setPlayerProperties(position: Int) {
+        val player = players[position]
+        val playerName = "${player.credentials.firstName} ${player.credentials.lastName}"
         val picasso = Picasso.get()
         picasso.isLoggingEnabled = true
         picasso.load(R.drawable.placeholder).into(avatar)
-
-        val player = dataSource[position]
-        val playerName = "${player.credentials.firstName} ${player.credentials.lastName}"
-
-        setFieldValues(holder, playerName, player)
+        userNameTitle.text = playerLayout.context.getString(R.string.user_name_title)
+        userName.text = playerName
+        ratingTitle.text = playerLayout.context.getString(R.string.rating)
+        rating.text = player.latestRating.rating
     }
 
-    interface ViewHolderClickListener {
-        fun onClick(view: View, position: Int)
-    }
+    override fun getItemCount() = players.size
 
-    class PlayerHolder internal constructor(v: View,
-                                            private val mListener: ViewHolderClickListener):
-            RecyclerView.ViewHolder(v), View.OnClickListener {
-        @BindView(R.id.userName_title) internal lateinit var userNameTitle: TextView
-        @BindView(R.id.userName_subtitle) lateinit var userName: TextView
-        @BindView(R.id.rating_title) lateinit var ratingTitle: TextView
-        @BindView(R.id.rating) lateinit var rating: TextView
-
+    class PlayerHolder internal constructor(view: View, players: ArrayList<Player>):
+            RecyclerView.ViewHolder(view) {
         init {
-            v.setOnClickListener(this)
+            view.setOnClickListener({
+                val player = players[adapterPosition]
+                val intent = Intent(view.context, PlayerProfileActivity::class.java)
+                intent.putExtra("currentPlayer", player)
+                view.context.startActivity(intent)
+            })
         }
 
-        override fun onClick(view: View) {
-            mListener.onClick(view, adapterPosition)
-        }
     }
-
-    private fun setFieldValues(holder: PlayerHolder, playerName: String, player: Player) {
-        holder.userNameTitle.text = context.getString(R.string.user_name_title)
-        holder.userName.text = playerName
-        holder.ratingTitle.text = context.getString(R.string.rating)
-        holder.rating.text = player.latestRating.rating
-    }
-
-    override fun getItemCount() = dataSource.size
 }

@@ -1,11 +1,10 @@
 package com.pongmania.konanov.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -29,6 +28,8 @@ class ScoreBoardActivity : AppCompatActivity() {
     @Inject lateinit var retrofit: Retrofit
     @BindView(R.id.playersList) lateinit var playersList: RecyclerView
     private lateinit var api: PongManiaApi
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,14 +90,14 @@ class ScoreBoardActivity : AppCompatActivity() {
     private fun ScoreBoardActivity.transformPlayerToViewItem(players: List<Player>) {
         Log.d(TAG, "Users of league received. Total count: ${players.size}")
 
-        val listener = { _: View, position: Int -> {
-            val player = players[position]
-            intent = Intent(this@ScoreBoardActivity, PlayerProfileActivity::class.java)
-            intent.putExtra("currentPlayer", player)
-            startActivity(intent)
-        }} as PlayerMainAdapter.ViewHolderClickListener
+        viewManager = LinearLayoutManager(this)
+        viewAdapter = PlayerMainAdapter(ArrayList(players))
 
-        val adapter = PlayerMainAdapter(this, ArrayList(players), listener)
-        playersList.adapter = adapter
+        playersList.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
+        playersList.addItemDecoration(ItemDivider(this@ScoreBoardActivity))
     }
 }

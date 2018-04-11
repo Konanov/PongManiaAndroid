@@ -3,6 +3,7 @@ package com.pongmania.konanov.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Button
 import android.widget.TabHost
 import android.widget.Toast
 import butterknife.BindView
@@ -34,23 +35,21 @@ class AssignLeagueActivity : AppCompatActivity() {
         assignLeague(PublicLeagueType.JUNIOR.value)
     }
 
-
     @OnClick(R.id.middleLeagueButton)
     fun handleMid() {
-        assignLeague(PublicLeagueType.JUNIOR.value)
+        assignLeague(PublicLeagueType.MIDDLE.value)
     }
-
 
     @OnClick(R.id.proLeagueButton)
     fun handlePro() {
-        assignLeague(PublicLeagueType.JUNIOR.value)
+        assignLeague(PublicLeagueType.PRO.value)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_assign_league)
-        ButterKnife.bind(this)
         (application as PongMania).webComponent.inject(this)
+        ButterKnife.bind(this)
 
         initialise()
     }
