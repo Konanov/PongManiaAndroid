@@ -20,5 +20,6 @@
     <string name="middleLeague">Middle</string>
     <string name="proLeague">Pro</string>
     <string name="button_join_league">Join</string>
-    <string name="playerRating">Рейтинг игрока:</string>
+    <string name="playerRating">Рейтинг:</string>
+    <string name="pingUser">Пинг?</string>
 </resources>

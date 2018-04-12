@@ -21,7 +21,8 @@ import javax.inject.Singleton
 class WebModule(private val app: Application) {
 
     companion object {
-        const val API_URL = "http://10.0.2.2:8080/"
+        const val API_URL = "http://192.168.100.27:8080/"
+        //const val API_URL = "http://10.0.2.2:8080/"
     }
 
     @Provides

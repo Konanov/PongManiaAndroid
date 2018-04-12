@@ -62,6 +62,7 @@ dependencies {
 
     //findbugs
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 
 apply plugin: "com.google.gms.google-services"
