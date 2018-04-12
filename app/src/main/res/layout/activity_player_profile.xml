@@ -10,15 +10,13 @@
         android:id="@+id/profile_image_main"
         android:layout_width="0dp"
         android:layout_height="150dp"
-        android:layout_marginBottom="333dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:adjustViewBounds="false"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintDimensionRatio="w,1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -27,22 +25,22 @@
         android:id="@+id/playerRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:hint="@string/playerRating"
         android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/profile_image_main"
         app:layout_constraintStart_toStartOf="@+id/pingUser"
         app:layout_constraintTop_toBottomOf="@+id/pingUser"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/playerRatingValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
         android:fontFamily="casual"
         android:gravity="center"
         android:hint="@string/playerRating"
@@ -52,22 +50,68 @@
         android:textStyle="italic"
         app:layout_constraintBaseline_toBaselineOf="@+id/playerRating"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/playerRating" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline3" />
 
     <Button
         android:id="@+id/pingUser"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:fontFamily="casual"
         android:text="@string/pingUser"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="30sp"
+        android:textSize="18sp"
         app:layout_constraintDimensionRatio="w,2:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/profile_image_main"
         app:layout_constraintTop_toTopOf="@+id/profile_image_main" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="158dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="158dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="117dp" />
+
+    <TextView
+        android:id="@+id/gamesPlayedTitle"
+        android:layout_width="109dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/gamesPlayed"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/playerRating"
+        app:layout_constraintTop_toBottomOf="@+id/playerRating" />
+
+    <TextView
+        android:id="@+id/gamesPlayedValue"
+        android:layout_width="0dp"
+        android:layout_height="19dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/gamesPlayedTitle"
+        app:layout_constraintTop_toBottomOf="@+id/playerRatingValue" />
 </android.support.constraint.ConstraintLayout>

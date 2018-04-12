@@ -12,6 +12,7 @@
     <string name="scoreBoard">Лига</string>
     <string name="assignLeague">Вступить в лигу</string>
     <string name="playerProfile">Профиль игрока</string>
+    <string name="planGame">Планирование игры</string>
     <string name="thumbnail">Player Icon</string>
     <string name="rating">Рейтинг</string>
     <string name="rating_deviation">Отклонение рейтинга</string>
@@ -22,4 +23,5 @@
     <string name="button_join_league">Join</string>
     <string name="playerRating">Рейтинг:</string>
     <string name="pingUser">Пинг?</string>
+    <string name="gamesPlayed">Сыграно матчей</string>
 </resources>
