@@ -19,7 +19,6 @@ class PlayerMainAdapter(private val players: ArrayList<Player>):
         RecyclerView.Adapter<PlayerMainAdapter.PlayerHolder>() {
 
     @BindView(R.id.profile_image) lateinit var avatar: ImageView
-    @BindView(R.id.userName_title) internal lateinit var userNameTitle: TextView
     @BindView(R.id.userName_subtitle) lateinit var userName: TextView
     @BindView(R.id.rating_title) lateinit var ratingTitle: TextView
     @BindView(R.id.rating) lateinit var rating: TextView
@@ -44,7 +43,6 @@ class PlayerMainAdapter(private val players: ArrayList<Player>):
         val picasso = Picasso.get()
         picasso.isLoggingEnabled = true
         picasso.load(R.drawable.placeholder).into(avatar)
-        userNameTitle.text = playerLayout.context.getString(R.string.user_name_title)
         userName.text = playerName
         ratingTitle.text = playerLayout.context.getString(R.string.rating)
         rating.text = player.latestRating.rating
