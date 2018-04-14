@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#9c4618</color>
-    <color name="colorPrimaryDark">#6b3b0a</color>
-    <color name="colorAccent">#c97540</color>
+    <color name="colorPrimary">#d19f3333</color>
+    <color name="colorPrimaryDark">#9f99141b</color>
+    <color name="colorAccent">#ae2222</color>
+    <color name="playerRowColor">#b6cc6c6c</color>
     <color name="disabledPrimary">#6e6e6e</color>
     <color name="disabledPrimaryDark">#505050</color>
     <color name="disabledAccent">#ab968c</color>

@@ -30,4 +30,7 @@ interface PongManiaApi {
 
     @GET("player/{email}/public/league")
     fun playersPublicLeague(@Path("email") email: String): Observable<PublicLeague>
+
+    @GET("players/{email}")
+    fun getPlayerByEmail(@Path("email") email: String): Observable<Player>
 }

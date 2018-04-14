@@ -57,10 +57,7 @@
             android:label="@string/playerProfile">
         </activity>
 
-        <activity
-            android:name=".activity.PlanGameActivity"
-            android:label="@string/planGame">
-        </activity>
+        <activity android:name=".activity.PlanGameActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"
