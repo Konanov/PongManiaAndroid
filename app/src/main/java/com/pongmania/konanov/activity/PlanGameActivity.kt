@@ -2,7 +2,6 @@ package com.pongmania.konanov.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
 import android.widget.CalendarView
 import android.widget.Toast
 import butterknife.BindView
@@ -12,8 +11,6 @@ import com.pongmania.konanov.R
 import com.pongmania.konanov.api.PongManiaApi
 import com.pongmania.konanov.model.Player
 import com.pongmania.konanov.util.CredentialsPreference
-import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
@@ -36,28 +33,33 @@ class PlanGameActivity : AppCompatActivity() {
 
         val player = intent.getSerializableExtra("rival") as Player
 
-        val name = "${player.credentials.firstName} ${player.credentials.lastName}"
-
         val hostEmail = CredentialsPreference.getEmail(this.application)
         val guestEmail = player.credentials.email
-        var hostPlayer = api.getPlayerByEmail(hostEmail)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-        var guestPlayer = api.getPlayerByEmail(guestEmail)
+
+        val hostPlayer = api.getPlayerByEmail(hostEmail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
 
+        val guestPlayer = api.getPlayerByEmail(guestEmail)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
 
-        title = "${hostPlayer.blockingFirst().credentials.lastName} VS. ${guestPlayer.blockingFirst().credentials.lastName}"
-        /*hostPlayer.map({contestant -> "${contestant.credentials.lastName} VS. "})
-                .concatWith ({ guestPlayer.map { contestant -> "${contestant.credentials.lastName}"}})
-                .subscribe { result -> title = result }*/
+        hostPlayer.concatWith(guestPlayer)
+                .map{contestant -> contestant.credentials.lastName}
+                .reduce { host: String, guest: String -> "$host VS $guest" }
+                .subscribe( {result -> title = result}, { error -> errorOnUserLoading(error) })
 
         calendarView.setOnDateChangeListener({ _, year, month, dayOfMonth ->
             //refactor this deprecation
             gameDate = Date("$dayOfMonth/$month/$year")
-            Toast.makeText(this, "Выбрана дата $dayOfMonth/$month/$year", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Выбрана дата $dayOfMonth/$month/$year",
+                    Toast.LENGTH_SHORT).show()
         })
 
+    }
+
+    private fun errorOnUserLoading(error: Throwable) {
+        Toast.makeText(this, "Ошибка при попытке предложить игру \n ${error.message}",
+                Toast.LENGTH_SHORT).show()
     }
 }

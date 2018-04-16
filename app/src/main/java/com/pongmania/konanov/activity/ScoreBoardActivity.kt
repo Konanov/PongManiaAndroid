@@ -26,7 +26,7 @@ class ScoreBoardActivity : AppCompatActivity() {
     private val TAG = "ScoreBoardActivity"
 
     @Inject lateinit var retrofit: Retrofit
-    @BindView(R.id.playersList) lateinit var playersList: RecyclerView
+    @BindView(R.id.players_list) lateinit var playersList: RecyclerView
     private lateinit var api: PongManiaApi
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>

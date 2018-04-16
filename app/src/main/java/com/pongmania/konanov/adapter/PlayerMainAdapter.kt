@@ -5,14 +5,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
-import butterknife.OnClick
 import com.pongmania.konanov.R
-import com.pongmania.konanov.activity.PlanGameActivity
 import com.pongmania.konanov.activity.PlayerProfileActivity
 import com.pongmania.konanov.model.Player
 import com.squareup.picasso.Picasso
@@ -25,7 +22,6 @@ class PlayerMainAdapter(private val players: ArrayList<Player>):
     @BindView(R.id.userName_subtitle) lateinit var userName: TextView
     @BindView(R.id.rating_title) lateinit var ratingTitle: TextView
     @BindView(R.id.rating) lateinit var rating: TextView
-    @BindView(R.id.pingUser) lateinit var pingUser: Button
 
     private lateinit var playerLayout: View
 
@@ -34,7 +30,7 @@ class PlayerMainAdapter(private val players: ArrayList<Player>):
         playerLayout = layoutInflater.inflate(R.layout.player_row, parent, false)
         ButterKnife.bind(this, playerLayout)
 
-        return PlayerHolder(playerLayout, pingUser, players)
+        return PlayerHolder(playerLayout, players)
     }
 
     override fun onBindViewHolder(holder: PlayerHolder, position: Int) {
@@ -54,19 +50,13 @@ class PlayerMainAdapter(private val players: ArrayList<Player>):
 
     override fun getItemCount() = players.size
 
-    class PlayerHolder internal constructor(view: View, pingUser: Button, players: ArrayList<Player>):
+    class PlayerHolder internal constructor(view: View, players: ArrayList<Player>):
             RecyclerView.ViewHolder(view) {
         init {
             view.setOnClickListener({
                 val player = players[adapterPosition]
                 val intent = Intent(view.context, PlayerProfileActivity::class.java)
                 intent.putExtra("currentPlayer", player)
-                view.context.startActivity(intent)
-            })
-            pingUser.setOnClickListener({
-                val player = players[adapterPosition]
-                val intent = Intent(view.context, PlanGameActivity::class.java)
-                intent.putExtra("rival", player)
                 view.context.startActivity(intent)
             })
         }
