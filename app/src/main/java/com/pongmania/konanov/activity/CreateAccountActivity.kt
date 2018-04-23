@@ -86,7 +86,7 @@ class CreateAccountActivity: AppCompatActivity() {
                             tryCreateUser()
                             CredentialsPreference.setCredentials(this.application, email, password)
 
-                            startLoginActivity()
+                            goFor(this@CreateAccountActivity, LoginActivity::class.java)
                         } else {
                             errorWhileCreatingUser(task)
                         }
@@ -149,12 +149,6 @@ class CreateAccountActivity: AppCompatActivity() {
                         verificationSendingError(task)
                     }
                 }
-    }
-
-    private fun startLoginActivity() {
-        val intent = Intent(this@CreateAccountActivity, LoginActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivity(intent)
     }
 
     private fun verificationSendingError(task: Task<Void>) {

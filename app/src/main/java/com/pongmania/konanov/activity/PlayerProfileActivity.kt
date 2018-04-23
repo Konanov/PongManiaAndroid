@@ -34,10 +34,8 @@ class PlayerProfileActivity : AppCompatActivity() {
         loadAvatar()
 
         pingUser.setOnClickListener({
-            intent = Intent(this@PlayerProfileActivity, PlanGameActivity::class.java)
-            intent.putExtra("rival", player)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
+            goFor(this@PlayerProfileActivity,
+                    PlanGameActivity::class.java, "rival", player)
         })
     }
 

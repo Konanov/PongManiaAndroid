@@ -114,35 +114,12 @@ class LoginActivity : AppCompatActivity() {
         retrofit.create(PongManiaApi::class.java).playerHasLeague(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result -> decideOnResult(result)
-                }, {error ->
-                    run {
-                        Log.d(TAG, "Невозможно определить, состоит ли игрок в лиге")
-                        Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
-                    }
+                .subscribe({ result ->
+                        if (!result) {
+                            goFor(this@LoginActivity, AssignLeagueActivity::class.java)
+                        } else {
+                            goFor(this@LoginActivity, ScoreBoardActivity::class.java)
+                        }
                 })
-    }
-
-    private fun decideOnResult(result: Boolean) {
-        if (!result) {
-            assignLeague()
-        } else {
-            showScoreboard()
-        }
-    }
-
-    private fun showScoreboard() {
-        nextActivity(ScoreBoardActivity::class.java)
-    }
-
-    private fun assignLeague() {
-        nextActivity(AssignLeagueActivity::class.java)
-    }
-
-    private fun LoginActivity.nextActivity(clazz: Class<*>) {
-        intent = Intent(this@LoginActivity, clazz)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-        this.finish()
     }
 }

@@ -88,11 +88,7 @@ class AssignLeagueActivity : AppCompatActivity() {
 
     private fun startScoreBoardActivity(result: PublicLeague) {
         Toast.makeText(this, result.type.value, Toast.LENGTH_LONG).show()
-        intent = Intent(this@AssignLeagueActivity,
-                ScoreBoardActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-        this.finish()
+        goFor(this@AssignLeagueActivity, ScoreBoardActivity::class.java)
     }
 
     private fun createTab(tabNumber: Int, indicator: String,
