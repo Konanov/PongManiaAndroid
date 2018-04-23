@@ -15,13 +15,19 @@ import com.pongmania.konanov.model.Player
 import com.squareup.picasso.Picasso
 
 
-class PlayerMainAdapter(private val players: ArrayList<Player>):
+class PlayerMainAdapter(private val players: ArrayList<Player>) :
         RecyclerView.Adapter<PlayerMainAdapter.PlayerHolder>() {
 
-    @BindView(R.id.profile_image) lateinit var avatar: ImageView
-    @BindView(R.id.userName_subtitle) lateinit var userName: TextView
-    @BindView(R.id.rating_title) lateinit var ratingTitle: TextView
-    @BindView(R.id.rating) lateinit var rating: TextView
+    @BindView(R.id.profile_image)
+    lateinit var avatar: ImageView
+    @BindView(R.id.userName_subtitle)
+    lateinit var userName: TextView
+    @BindView(R.id.rating_title)
+    lateinit var ratingTitle: TextView
+    @BindView(R.id.rating)
+    lateinit var rating: TextView
+    @BindView(R.id.player_position)
+    lateinit var playerPosition: TextView
 
     private lateinit var playerLayout: View
 
@@ -41,16 +47,18 @@ class PlayerMainAdapter(private val players: ArrayList<Player>):
         val player = players[position]
         val playerName = "${player.credentials.firstName} ${player.credentials.lastName}"
         val picasso = Picasso.get()
+        val leaguePosition = "${position + 1}."
         picasso.isLoggingEnabled = true
         picasso.load(R.drawable.placeholder).into(avatar)
         userName.text = playerName
         ratingTitle.text = playerLayout.context.getString(R.string.rating)
         rating.text = player.latestRating.rating
+        playerPosition.text = leaguePosition
     }
 
     override fun getItemCount() = players.size
 
-    class PlayerHolder internal constructor(view: View, players: ArrayList<Player>):
+    class PlayerHolder internal constructor(view: View, players: ArrayList<Player>) :
             RecyclerView.ViewHolder(view) {
         init {
             view.setOnClickListener({
@@ -60,5 +68,13 @@ class PlayerMainAdapter(private val players: ArrayList<Player>):
                 view.context.startActivity(intent)
             })
         }
+    }
+
+    override fun getItemId(position: Int): Long {
+        return players[position].credentials.hashCode().toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return players[position].credentials.hashCode()
     }
 }

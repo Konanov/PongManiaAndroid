@@ -1,14 +1,16 @@
 package com.pongmania.konanov.activity
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
+import com.pongmania.konanov.util.CredentialsPreference
 import java.io.Serializable
 
 /**
  * Starts new activity finishing previous one.
  */
-fun <T: AppCompatActivity> AppCompatActivity.goFor(context: Context, t: Class<T>) {
+fun <T : AppCompatActivity> AppCompatActivity.goFor(context: Context, t: Class<T>) {
     val intent = Intent(context, t)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(intent)
@@ -16,10 +18,10 @@ fun <T: AppCompatActivity> AppCompatActivity.goFor(context: Context, t: Class<T>
 }
 
 /**
- * Starts new activity finishing previous one.
+ * Starts new activity finishing previous one and passing Extra object.
  */
-fun <T: AppCompatActivity> AppCompatActivity.goFor(context: Context, t: Class<T>,
-                                                   reference: String,extra: Serializable?) {
+fun <T : AppCompatActivity> AppCompatActivity.goFor(context: Context, t: Class<T>,
+                                                    reference: String, extra: Serializable?) {
     val intent = Intent(context, t)
     intent.putExtra(reference, extra)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

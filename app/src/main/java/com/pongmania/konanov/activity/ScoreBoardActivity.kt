@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.OnClick
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
 import com.pongmania.konanov.adapter.PlayerMainAdapter
@@ -30,6 +31,14 @@ class ScoreBoardActivity : AppCompatActivity() {
     private lateinit var api: PongManiaApi
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var playersOfLeague: List<Player>
+
+    @OnClick(R.id.me_button)
+    fun findMe() {
+        val mail = CredentialsPreference.getEmail(this.application)
+        val player = playersOfLeague.find { it -> it.credentials.email == mail }
+        playersList.scrollToPosition(player?.credentials?.hashCode()!!)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +74,7 @@ class ScoreBoardActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ players ->
                     run {
+                        playersOfLeague = players
                         transformPlayerToViewItem(players)
                     }
                 }, { error ->
