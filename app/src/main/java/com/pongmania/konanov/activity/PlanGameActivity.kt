@@ -3,9 +3,7 @@ package com.pongmania.konanov.activity
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.CalendarView
 import android.widget.Toast
-import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.pongmania.konanov.PongMania
@@ -21,13 +19,9 @@ import javax.inject.Inject
 
 class PlanGameActivity : AppCompatActivity() {
 
-    @BindView(R.id.plannedGameDate)
-    lateinit var calendarView: CalendarView
-
     @Inject lateinit var retrofit: Retrofit
     private lateinit var api: PongManiaApi
 
-    private lateinit var gameDate: String
     private lateinit var hostEmail: String
     private lateinit var guestEmail: String
 
@@ -60,14 +54,6 @@ class PlanGameActivity : AppCompatActivity() {
                 .map { contestant -> contestant.credentials.lastName }
                 .reduce { host: String, guest: String -> "$host VS $guest" }
                 .subscribe({ result -> title = result }, { error -> errorOnUserLoading(error) })
-
-        calendarView.setOnDateChangeListener({ _, year, month, dayOfMonth ->
-            //refactor this deprecation
-            gameDate = "$dayOfMonth/$month/$year"
-            Toast.makeText(this, "Выбрана дата $dayOfMonth/$month/$year",
-                    Toast.LENGTH_SHORT).show()
-        })
-
     }
 
     private fun errorOnUserLoading(error: Throwable) {
@@ -76,6 +62,7 @@ class PlanGameActivity : AppCompatActivity() {
     }
 
     private fun loadFragment(fragment: Fragment) {
-        fragmentManager.beginTransaction().replace(R.id.planGameFrame, fragment).commit()
+        fragmentManager.beginTransaction().replace(R.id.planGameActivity, fragment)
+                .show(fragment).commit()
     }
 }
