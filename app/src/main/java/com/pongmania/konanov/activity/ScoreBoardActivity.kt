@@ -37,7 +37,9 @@ class ScoreBoardActivity : AppCompatActivity() {
     fun findMe() {
         val mail = CredentialsPreference.getEmail(this.application)
         val player = playersOfLeague.find { it -> it.credentials.email == mail }
-        playersList.scrollToPosition(player?.credentials?.hashCode()!!)
+        val scrollTo = playersOfLeague.indexOf(player)
+        playersList.smoothScrollToPosition(scrollTo)
+        Log.d(TAG, "Scroll to player position: $scrollTo")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
