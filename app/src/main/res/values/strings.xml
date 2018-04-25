@@ -22,4 +22,6 @@
     <string name="playerRating">Рейтинг:</string>
     <string name="pingUser">Пинг?</string>
     <string name="gamesPlayed">Сыграно матчей</string>
+    <string name="planGameDate">Назначьте дату проведения игры</string>
+    <string name="ok">OK</string>
 </resources>

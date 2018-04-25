@@ -2,8 +2,11 @@ package com.pongmania.konanov.activity
 
 import android.app.Fragment
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.Toast
+import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.pongmania.konanov.PongMania
@@ -24,6 +27,9 @@ class PlanGameActivity : AppCompatActivity() {
 
     private lateinit var hostEmail: String
     private lateinit var guestEmail: String
+
+    @BindView(R.id.activityViewPart)
+    lateinit var mainLayout: ConstraintLayout
 
     @OnClick(R.id.pickDate)
     fun pickDate() {
@@ -62,6 +68,7 @@ class PlanGameActivity : AppCompatActivity() {
     }
 
     private fun loadFragment(fragment: Fragment) {
+        mainLayout.visibility = View.GONE
         fragmentManager.beginTransaction().replace(R.id.planGameActivity, fragment)
                 .show(fragment).commit()
     }

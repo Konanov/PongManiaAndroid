@@ -2,40 +2,36 @@ package com.pongmania.konanov.fragments
 
 import android.app.Fragment
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.Toast
 import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.OnClick
 import com.pongmania.konanov.R
 
 class PickDateFragment : Fragment() {
 
-//    @OnClick(R.id.chooseTime)
-//    fun chooseTime() {
-//        val game = Game(false, gameDate, hostMail = hostEmail, guestMail = guestEmail)
-//
-//    }
+    @BindView(R.id.plannedGameDate)
+    lateinit var calendar: CalendarView
 
     private lateinit var gameDate: String
+
+    @OnClick(R.id.back)
+    fun backToActivity() {
+        //fragmentManager.beginTransaction()
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
-        /*view.findViewById<>(R.layout.plannedGameDate)
-
-        calendarView.setOnDateChangeListener({ _, year, month, dayOfMonth ->
-            //refactor this deprecation
-            gameDate = "$dayOfMonth/$month/$year"
-            //Toast.makeText(this, "Выбрана дата $dayOfMonth/$month/$year",
-            //        Toast.LENGTH_SHORT).show()
-        })*/
-
         val view = inflater!!.inflate(R.layout.fragment_plan_date, container, false)
-        val calendarView = view.findViewById<CalendarView>(R.id.plannedGameDate)
+        ButterKnife.bind(this, view)
 
-        calendarView.setOnDateChangeListener({ _, year, month, dayOfMonth ->
+        calendar.setOnDateChangeListener({ _, year, month, dayOfMonth ->
             //refactor this deprecation
             gameDate = "$dayOfMonth/$month/$year"
             Toast.makeText(view.context, "Выбрана дата $dayOfMonth/$month/$year",
@@ -44,6 +40,4 @@ class PickDateFragment : Fragment() {
 
         return view
     }
-
-
 }
