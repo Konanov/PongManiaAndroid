@@ -28,6 +28,9 @@ class PlanGameActivity : AppCompatActivity() {
     private lateinit var hostEmail: String
     private lateinit var guestEmail: String
 
+    private lateinit var gameDate: String
+    private lateinit var gameTime: String
+
     @BindView(R.id.activityViewPart)
     lateinit var mainLayout: ConstraintLayout
 

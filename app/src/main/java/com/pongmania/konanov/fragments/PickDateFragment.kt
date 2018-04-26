@@ -15,7 +15,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.google.gson.Gson
 import com.pongmania.konanov.R
-import com.pongmania.konanov.model.Game
+import com.pongmania.konanov.util.DataHolder
 
 class PickDateFragment : Fragment() {
 
@@ -26,23 +26,22 @@ class PickDateFragment : Fragment() {
 
     @OnClick(R.id.back)
     fun backToActivity() {
-        fragmentManager.beginTransaction().hide(this).commit()
-        this.activity.findViewById<ConstraintLayout>(R.id.activityViewPart).visibility = View.VISIBLE
+        hideFragment()
     }
 
     @OnClick(R.id.confirmDate)
     fun confirmDate() {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this.activity)
-        if (gameIsPresentIn(preferences)) {
-            val game = getPlannedGame(preferences)
+        val gameDate = DataHolder.getGameDate(this.activity.application)
+        if (gameDate.isEmpty()) {
+            DataHolder.setGameDate(this.activity.application, gameDate)
+            hideFragment()
         }
     }
 
-    private fun getPlannedGame(preferences: SharedPreferences) =
-            Gson().fromJson<Game>(preferences.getString("PlannedGame", ""),
-                    Game::class.java)
-
-    private fun gameIsPresentIn(preferences: SharedPreferences) = preferences.contains("PlannedGame")
+    private fun hideFragment() {
+        fragmentManager.beginTransaction().hide(this).commit()
+        this.activity.findViewById<ConstraintLayout>(R.id.activityViewPart).visibility = View.VISIBLE
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
