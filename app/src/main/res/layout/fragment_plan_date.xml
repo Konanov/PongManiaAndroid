@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.65" />
 
     <Button
-        android:id="@+id/chooseTime"
+        android:id="@+id/confirmDate"
         style="@style/PingButton"
         android:layout_width="100dp"
         android:layout_height="60dp"

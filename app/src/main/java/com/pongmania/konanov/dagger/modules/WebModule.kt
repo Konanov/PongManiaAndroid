@@ -1,15 +1,11 @@
 package com.pongmania.konanov.dagger.modules
 
 import android.app.Application
-import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.pongmania.konanov.interceptors.BasicAuthInterceptor
-import com.pongmania.konanov.util.CredentialsPreference
 import dagger.Module
 import dagger.Provides
-import okhttp3.Authenticator
 import okhttp3.Cache
-import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory

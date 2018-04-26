@@ -15,7 +15,7 @@ import com.pongmania.konanov.adapter.PlayerMainAdapter
 import com.pongmania.konanov.api.PongManiaApi
 import com.pongmania.konanov.model.Player
 import com.pongmania.konanov.model.PublicLeague
-import com.pongmania.konanov.util.CredentialsPreference
+import com.pongmania.konanov.util.DataHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -35,7 +35,7 @@ class ScoreBoardActivity : AppCompatActivity() {
 
     @OnClick(R.id.me_button)
     fun findMe() {
-        val mail = CredentialsPreference.getEmail(this.application)
+        val mail = DataHolder.getEmail(this.application)
         val player = playersOfLeague.find { it -> it.credentials.email == mail }
         val scrollTo = playersOfLeague.indexOf(player)
         playersList.smoothScrollToPosition(scrollTo)
@@ -53,7 +53,7 @@ class ScoreBoardActivity : AppCompatActivity() {
     }
 
     private fun initialise() {
-        val email = CredentialsPreference.getEmail(this.application)
+        val email = DataHolder.getEmail(this.application)
         api.playersPublicLeague(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

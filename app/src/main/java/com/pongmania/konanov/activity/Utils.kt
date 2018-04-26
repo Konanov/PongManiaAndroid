@@ -1,10 +1,8 @@
 package com.pongmania.konanov.activity
 
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
-import com.pongmania.konanov.util.CredentialsPreference
 import java.io.Serializable
 
 /**

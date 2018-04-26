@@ -1,9 +1,7 @@
 package com.pongmania.konanov.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Button
 import android.widget.TabHost
 import android.widget.Toast
 import butterknife.BindView
@@ -15,7 +13,7 @@ import com.pongmania.konanov.api.PongManiaApi
 import com.pongmania.konanov.model.Player
 import com.pongmania.konanov.model.PublicLeague
 import com.pongmania.konanov.model.PublicLeagueType
-import com.pongmania.konanov.util.CredentialsPreference
+import com.pongmania.konanov.util.DataHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
@@ -71,7 +69,7 @@ class AssignLeagueActivity : AppCompatActivity() {
 
     private fun assignLeague(type: String) {
         retrofit.create(PongManiaApi::class.java).assignLeague(type,
-                Player.Credentials(CredentialsPreference.getEmail(this.application)))
+                Player.Credentials(DataHolder.getEmail(this.application)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->

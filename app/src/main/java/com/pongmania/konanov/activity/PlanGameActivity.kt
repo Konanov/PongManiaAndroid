@@ -14,7 +14,7 @@ import com.pongmania.konanov.R
 import com.pongmania.konanov.api.PongManiaApi
 import com.pongmania.konanov.fragments.PickDateFragment
 import com.pongmania.konanov.model.Player
-import com.pongmania.konanov.util.CredentialsPreference
+import com.pongmania.konanov.util.DataHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
@@ -45,7 +45,7 @@ class PlanGameActivity : AppCompatActivity() {
 
         val player = intent.getSerializableExtra("rival") as Player
 
-        hostEmail = CredentialsPreference.getEmail(this.application)
+        hostEmail = DataHolder.getEmail(this.application)
         guestEmail = player.credentials.email
 
         val hostPlayer = api.getPlayerByEmail(hostEmail)

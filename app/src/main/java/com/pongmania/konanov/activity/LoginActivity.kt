@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
 import com.pongmania.konanov.api.PongManiaApi
-import com.pongmania.konanov.util.CredentialsPreference
+import com.pongmania.konanov.util.DataHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
@@ -69,8 +69,8 @@ class LoginActivity : AppCompatActivity() {
             setContentView(R.layout.activity_login)
             ButterKnife.bind(this)
         } else {
-            email = CredentialsPreference.getEmail(this.application)
-            password = CredentialsPreference.getPassword(this.application)
+            email = DataHolder.getEmail(this.application)
+            password = DataHolder.getPassword(this.application)
             trySignIn()
         }
     }
@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
         email = loginEmail.text.toString()
         password = etPassword.text.toString()
             if (mandatoryFieldsPresent()) {
-                CredentialsPreference.setCredentials(this.application, email, password)
+                DataHolder.setCredentials(this.application, email, password)
                 mProgressBar.visibility = View.VISIBLE
                 Log.d(TAG, "Logging in user.")
                 trySignIn()
@@ -107,8 +107,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun mandatoryFieldsPresent() = !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)
 
-    private fun noPreferences() = CredentialsPreference.getEmail(this.application).isEmpty() ||
-            CredentialsPreference.getPassword(this.application).isEmpty()
+    private fun noPreferences() = DataHolder.getEmail(this.application).isEmpty() ||
+            DataHolder.getPassword(this.application).isEmpty()
 
     private fun chooseNextActivity() {
         retrofit.create(PongManiaApi::class.java).playerHasLeague(email)

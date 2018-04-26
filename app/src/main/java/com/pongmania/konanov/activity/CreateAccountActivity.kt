@@ -1,6 +1,5 @@
 package com.pongmania.konanov.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -22,7 +21,7 @@ import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
 import com.pongmania.konanov.api.PongManiaApi
 import com.pongmania.konanov.model.Player
-import com.pongmania.konanov.util.CredentialsPreference
+import com.pongmania.konanov.util.DataHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
@@ -84,7 +83,7 @@ class CreateAccountActivity: AppCompatActivity() {
                             verifyEmail()
                             updateUserProfileInformation(userId)
                             tryCreateUser()
-                            CredentialsPreference.setCredentials(this.application, email, password)
+                            DataHolder.setCredentials(this.application, email, password)
 
                             goFor(this@CreateAccountActivity, LoginActivity::class.java)
                         } else {

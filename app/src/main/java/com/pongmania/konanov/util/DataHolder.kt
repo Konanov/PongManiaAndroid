@@ -1,12 +1,11 @@
 package com.pongmania.konanov.util
 
 import android.app.Application
-import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 
 
-object CredentialsPreference {
+object DataHolder {
 
     private const val EMAIL = "com.pongmania.konanov.Email"
     private const val PASSWORD = "com.pongmania.konanov.Password"

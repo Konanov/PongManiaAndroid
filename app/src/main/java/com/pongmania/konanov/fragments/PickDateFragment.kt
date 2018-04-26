@@ -1,7 +1,9 @@
 package com.pongmania.konanov.fragments
 
 import android.app.Fragment
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.constraint.ConstraintLayout
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +13,9 @@ import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.google.gson.Gson
 import com.pongmania.konanov.R
+import com.pongmania.konanov.model.Game
 
 class PickDateFragment : Fragment() {
 
@@ -22,8 +26,23 @@ class PickDateFragment : Fragment() {
 
     @OnClick(R.id.back)
     fun backToActivity() {
-        //fragmentManager.beginTransaction()
+        fragmentManager.beginTransaction().hide(this).commit()
+        this.activity.findViewById<ConstraintLayout>(R.id.activityViewPart).visibility = View.VISIBLE
     }
+
+    @OnClick(R.id.confirmDate)
+    fun confirmDate() {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this.activity)
+        if (gameIsPresentIn(preferences)) {
+            val game = getPlannedGame(preferences)
+        }
+    }
+
+    private fun getPlannedGame(preferences: SharedPreferences) =
+            Gson().fromJson<Game>(preferences.getString("PlannedGame", ""),
+                    Game::class.java)
+
+    private fun gameIsPresentIn(preferences: SharedPreferences) = preferences.contains("PlannedGame")
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
