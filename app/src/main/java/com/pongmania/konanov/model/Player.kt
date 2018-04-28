@@ -8,6 +8,7 @@ data class Player(val id: String,
                   val publicLeague: PublicLeague): Serializable {
     private val status: Status? = null
     private val points: Double = 0.toDouble()
+    val games: Collection<Game> = ArrayList()
 
     data class Credentials(val email: String,
                            val firstName: String? = null,

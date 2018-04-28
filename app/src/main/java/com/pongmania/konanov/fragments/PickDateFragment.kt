@@ -1,9 +1,7 @@
 package com.pongmania.konanov.fragments
 
 import android.app.Fragment
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.constraint.ConstraintLayout
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +11,6 @@ import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.google.gson.Gson
 import com.pongmania.konanov.R
 import com.pongmania.konanov.util.DataHolder
 

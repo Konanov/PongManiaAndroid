@@ -9,7 +9,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
-import com.pongmania.konanov.api.PongManiaApi
+import com.pongmania.konanov.api.PlayerApi
 import com.pongmania.konanov.model.Player
 import com.pongmania.konanov.model.PublicLeague
 import com.pongmania.konanov.model.PublicLeagueType
@@ -68,7 +68,7 @@ class AssignLeagueActivity : AppCompatActivity() {
     }
 
     private fun assignLeague(type: String) {
-        retrofit.create(PongManiaApi::class.java).assignLeague(type,
+        retrofit.create(PlayerApi::class.java).assignLeague(type,
                 Player.Credentials(DataHolder.getEmail(this.application)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

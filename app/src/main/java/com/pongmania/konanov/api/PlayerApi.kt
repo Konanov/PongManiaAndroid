@@ -10,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface PongManiaApi {
+interface PlayerApi {
 
     @GET("player/all")
     fun getPlayers(): Observable<List<Player>>

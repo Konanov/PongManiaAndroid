@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
-import com.pongmania.konanov.api.PongManiaApi
+import com.pongmania.konanov.api.PlayerApi
 import com.pongmania.konanov.model.Player
 import com.pongmania.konanov.util.DataHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -103,7 +103,7 @@ class CreateAccountActivity: AppCompatActivity() {
     }
 
     private fun tryCreateUser() {
-        retrofit.create(PongManiaApi::class.java)
+        retrofit.create(PlayerApi::class.java)
                 .createUser(Player.Credentials(email, firstName, lastName, password))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

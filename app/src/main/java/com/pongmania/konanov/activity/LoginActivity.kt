@@ -13,7 +13,7 @@ import butterknife.OnClick
 import com.google.firebase.auth.FirebaseAuth
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
-import com.pongmania.konanov.api.PongManiaApi
+import com.pongmania.konanov.api.PlayerApi
 import com.pongmania.konanov.util.DataHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -111,7 +111,7 @@ class LoginActivity : AppCompatActivity() {
             DataHolder.getPassword(this.application).isEmpty()
 
     private fun chooseNextActivity() {
-        retrofit.create(PongManiaApi::class.java).playerHasLeague(email)
+        retrofit.create(PlayerApi::class.java).playerHasLeague(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->

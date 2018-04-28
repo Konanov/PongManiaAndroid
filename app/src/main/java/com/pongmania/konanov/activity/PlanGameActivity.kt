@@ -11,8 +11,10 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
-import com.pongmania.konanov.api.PongManiaApi
+import com.pongmania.konanov.api.GameApi
+import com.pongmania.konanov.api.PlayerApi
 import com.pongmania.konanov.fragments.PickDateFragment
+import com.pongmania.konanov.model.Game
 import com.pongmania.konanov.model.Player
 import com.pongmania.konanov.util.DataHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,13 +25,11 @@ import javax.inject.Inject
 class PlanGameActivity : AppCompatActivity() {
 
     @Inject lateinit var retrofit: Retrofit
-    private lateinit var api: PongManiaApi
+    private lateinit var playerApi: PlayerApi
+    private lateinit var gameApi: GameApi
 
     private lateinit var hostEmail: String
     private lateinit var guestEmail: String
-
-    private lateinit var gameDate: String
-    private lateinit var gameTime: String
 
     @BindView(R.id.activityViewPart)
     lateinit var mainLayout: ConstraintLayout
@@ -39,23 +39,42 @@ class PlanGameActivity : AppCompatActivity() {
         loadFragment(PickDateFragment())
     }
 
+    @OnClick(R.id.offerGame)
+    fun offerGame() {
+        gameApi = retrofit.create(GameApi::class.java)
+        val gameDate = DataHolder.getGameDate(this.application)
+        val gameTime = DataHolder.getGameTime(this.application)
+        gameApi.offerGame(
+                Game(gameDate = gameDate,
+                     gameTime = gameTime,
+                     hostEmail = hostEmail,
+                     guestEmail = guestEmail))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe ({
+                    gameOffered()
+                },  {
+                    error -> errorOnUserLoading(error)
+                })
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plan_game)
         ButterKnife.bind(this)
         (application as PongMania).webComponent.inject(this)
-        api = retrofit.create(PongManiaApi::class.java)
+        playerApi = retrofit.create(PlayerApi::class.java)
 
         val player = intent.getSerializableExtra("rival") as Player
 
         hostEmail = DataHolder.getEmail(this.application)
         guestEmail = player.credentials.email
 
-        val hostPlayer = api.getPlayerByEmail(hostEmail)
+        val hostPlayer = playerApi.getPlayerByEmail(hostEmail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
 
-        val guestPlayer = api.getPlayerByEmail(guestEmail)
+        val guestPlayer = playerApi.getPlayerByEmail(guestEmail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
 
@@ -63,6 +82,11 @@ class PlanGameActivity : AppCompatActivity() {
                 .map { contestant -> contestant.credentials.lastName }
                 .reduce { host: String, guest: String -> "$host VS $guest" }
                 .subscribe({ result -> title = result }, { error -> errorOnUserLoading(error) })
+    }
+
+    private fun gameOffered() {
+        Toast.makeText(this, "Пользователь $hostEmail уведомлен о предложенной игре",
+                Toast.LENGTH_SHORT).show()
     }
 
     private fun errorOnUserLoading(error: Throwable) {

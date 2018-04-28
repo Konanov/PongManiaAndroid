@@ -12,7 +12,7 @@ import butterknife.OnClick
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
 import com.pongmania.konanov.adapter.PlayerMainAdapter
-import com.pongmania.konanov.api.PongManiaApi
+import com.pongmania.konanov.api.PlayerApi
 import com.pongmania.konanov.model.Player
 import com.pongmania.konanov.model.PublicLeague
 import com.pongmania.konanov.util.DataHolder
@@ -28,7 +28,7 @@ class ScoreBoardActivity : AppCompatActivity() {
 
     @Inject lateinit var retrofit: Retrofit
     @BindView(R.id.players_list) lateinit var playersList: RecyclerView
-    private lateinit var api: PongManiaApi
+    private lateinit var api: PlayerApi
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var playersOfLeague: List<Player>
@@ -46,7 +46,7 @@ class ScoreBoardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_score_board)
         (application as PongMania).webComponent.inject(this)
-        api = retrofit.create(PongManiaApi::class.java)
+        api = retrofit.create(PlayerApi::class.java)
         ButterKnife.bind(this)
 
         initialise()
