@@ -17,5 +17,4 @@ class BasicAuthInterceptor(val app: Application) : Interceptor {
                 .header("Authorization", cred).build()
         return chain.proceed(authenticatedRequest)
     }
-
 }
