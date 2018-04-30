@@ -28,8 +28,8 @@ class PlayerMainAdapter(private val players: ArrayList<Player>) :
     lateinit var rating: TextView
     @BindView(R.id.player_position)
     lateinit var playerPosition: TextView
-    @BindView(R.id.gamesPlanned)
-    lateinit var playerPlannedGames: TextView
+    @BindView(R.id.gamesPlayed)
+    lateinit var playerGamesPlayed: TextView
 
     private lateinit var playerLayout: View
 
@@ -52,7 +52,7 @@ class PlayerMainAdapter(private val players: ArrayList<Player>) :
         val leaguePosition = "${position + 1}."
         picasso.isLoggingEnabled = true
         picasso.load(R.drawable.placeholder).into(avatar)
-        playerPlannedGames.text = player.plannedGamesCount.toString()
+        playerGamesPlayed.text = player.plannedGamesCount.toString()
         userName.text = playerName
         ratingTitle.text = playerLayout.context.getString(R.string.rating)
         rating.text = player.latestRating.rating

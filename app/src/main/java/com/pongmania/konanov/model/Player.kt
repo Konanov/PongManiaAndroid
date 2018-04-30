@@ -9,6 +9,7 @@ data class Player(val id: String,
     private val status: Status? = null
     private val points: Double = 0.toDouble()
     val games: Collection<Game> = ArrayList()
+    val playedGamesCount: Long = 0
     val plannedGamesCount: Long = 0
 
     data class Credentials(val email: String,
