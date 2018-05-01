@@ -52,7 +52,7 @@ class PlayerMainAdapter(private val players: ArrayList<Player>) :
         val leaguePosition = "${position + 1}."
         picasso.isLoggingEnabled = true
         picasso.load(R.drawable.placeholder).into(avatar)
-        playerGamesPlayed.text = player.plannedGamesCount.toString()
+        playerGamesPlayed.text = player.playedGamesCount.toString()
         userName.text = playerName
         ratingTitle.text = playerLayout.context.getString(R.string.rating)
         rating.text = player.latestRating.rating

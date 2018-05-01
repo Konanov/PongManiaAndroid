@@ -20,6 +20,8 @@ import com.pongmania.konanov.util.DataHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class PlanGameActivity : AppCompatActivity() {
@@ -96,7 +98,8 @@ class PlanGameActivity : AppCompatActivity() {
 
     private fun loadFragment(fragment: Fragment) {
         mainLayout.visibility = View.GONE
-        fragmentManager.beginTransaction().replace(R.id.planGameActivity, fragment)
+        fragmentManager.beginTransaction()
+                .replace(R.id.planGameActivity, fragment)
                 .show(fragment).commit()
     }
 }

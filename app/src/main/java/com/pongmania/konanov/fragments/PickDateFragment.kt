@@ -19,8 +19,6 @@ class PickDateFragment : Fragment() {
     @BindView(R.id.plannedGameDate)
     lateinit var calendar: CalendarView
 
-    private lateinit var gameDate: String
-
     @OnClick(R.id.back)
     fun backToActivity() {
         hideFragment()
@@ -28,11 +26,7 @@ class PickDateFragment : Fragment() {
 
     @OnClick(R.id.confirmDate)
     fun confirmDate() {
-        val gameDate = DataHolder.getGameDate(this.activity.application)
-        if (gameDate.isEmpty()) {
-            DataHolder.setGameDate(this.activity.application, gameDate)
-            hideFragment()
-        }
+        hideFragment()
     }
 
     private fun hideFragment() {
@@ -47,9 +41,13 @@ class PickDateFragment : Fragment() {
         ButterKnife.bind(this, view)
 
         calendar.setOnDateChangeListener({ _, year, month, dayOfMonth ->
-            //refactor this deprecation
-            gameDate = "$dayOfMonth/$month/$year"
-            Toast.makeText(view.context, "Выбрана дата $dayOfMonth/$month/$year",
+            val properMonth: String = if (month < 10) {
+                "0${month + 1}"
+            } else {
+                (month + 1).toString()
+            }
+            DataHolder.setGameDate(this.activity.application, "$dayOfMonth/$properMonth/$year")
+            Toast.makeText(view.context, "Выбрана дата $dayOfMonth/$properMonth/$year",
                     Toast.LENGTH_SHORT).show()
         })
 
