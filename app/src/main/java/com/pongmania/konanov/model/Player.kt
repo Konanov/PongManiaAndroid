@@ -1,6 +1,7 @@
 package com.pongmania.konanov.model
 
 import java.io.Serializable
+import java.math.BigDecimal
 
 data class Player(val id: String,
                   val credentials: Credentials,
@@ -11,6 +12,7 @@ data class Player(val id: String,
     val games: Collection<Game> = ArrayList()
     val playedGamesCount: Long = 0
     val plannedGamesCount: Long = 0
+    val matchWinRatio: BigDecimal = BigDecimal(0)
 
     data class Credentials(val email: String,
                            val firstName: String? = null,
