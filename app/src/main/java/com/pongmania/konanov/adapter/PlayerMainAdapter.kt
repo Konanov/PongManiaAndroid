@@ -50,7 +50,7 @@ class PlayerMainAdapter(private val players: ArrayList<Player>) :
     private fun setPlayerProperties(position: Int) {
         val player = players[position]
         val playerName = "${player.credentials.firstName} ${player.credentials.lastName}"
-        val winRatio = player.matchWinRatio.toPlainString()
+        val winRatio = "${player.matchWinRatio.toPlainString()}%"
         val picasso = Picasso.get()
         val leaguePosition = "${position + 1}."
         picasso.isLoggingEnabled = true
@@ -58,7 +58,7 @@ class PlayerMainAdapter(private val players: ArrayList<Player>) :
         playerGamesPlayed.text = player.playedGamesCount.toString()
         userName.text = playerName
         ratingTitle.text = playerLayout.context.getString(R.string.rating)
-        matchWinRatio.text = "$winRatio%"
+        matchWinRatio.text = winRatio
         rating.text = player.latestRating.rating
         playerPosition.text = leaguePosition
     }
