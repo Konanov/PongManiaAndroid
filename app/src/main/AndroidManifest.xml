@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pongmania.konanov">
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -8,70 +9,62 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
         android:name=".PongMania"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity
-            android:name=".activity.MainActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.CreateAccountActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
+
                 <category android:name="android.intent.category.OPENABLE" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.ScoreBoardActivity"
             android:label="@string/scoreBoard">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+
                 <category android:name="android.intent.category.OPENABLE" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.AssignLeagueActivity"
             android:label="@string/assignLeague">
             <intent-filter>
                 <action android:name="android.intent.action.INSERT_OR_EDIT" />
+
                 <category android:name="android.intent.category.OPENABLE" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.PlayerProfileActivity"
-            android:label="@string/playerProfile">
-        </activity>
-
-        <activity android:name=".activity.PlanGameActivity"/>
+            android:label="@string/playerProfile" />
+        <activity android:name=".activity.PlanGameActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

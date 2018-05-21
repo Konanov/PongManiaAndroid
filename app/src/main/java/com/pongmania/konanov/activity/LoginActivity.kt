@@ -118,7 +118,7 @@ class LoginActivity : AppCompatActivity() {
                         if (!result) {
                             goFor(this@LoginActivity, AssignLeagueActivity::class.java)
                         } else {
-                            goFor(this@LoginActivity, ScoreBoardActivity::class.java)
+                            goFor(this@LoginActivity, MainActivity::class.java)
                         }
                 })
     }
