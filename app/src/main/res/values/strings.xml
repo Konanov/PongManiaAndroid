@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">PongMania</string>
 
-    <string name="email">Email</string>
+    <string name="id">Email</string>
     <string name="password">Password</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
@@ -24,7 +24,6 @@
     <string name="gamesPlayed">Сыграно матчей</string>
     <string name="planGameDate">Назначьте дату проведения игры</string>
     <string name="ok">OK</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>

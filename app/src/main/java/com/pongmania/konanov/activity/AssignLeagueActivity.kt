@@ -86,7 +86,7 @@ class AssignLeagueActivity : AppCompatActivity() {
 
     private fun startScoreBoardActivity(result: PublicLeague) {
         Toast.makeText(this, result.type.value, Toast.LENGTH_LONG).show()
-        goFor(this@AssignLeagueActivity, ScoreBoardActivity::class.java)
+        //goFor(this@AssignLeagueActivity, ScoreBoardFragment::class.java)
     }
 
     private fun createTab(tabNumber: Int, indicator: String,

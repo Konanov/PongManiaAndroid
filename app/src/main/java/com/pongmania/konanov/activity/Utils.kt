@@ -1,5 +1,7 @@
 package com.pongmania.konanov.activity
 
+import android.app.Application
+import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -24,4 +26,8 @@ fun <T : AppCompatActivity> AppCompatActivity.goFor(context: Context, t: Class<T
     intent.putExtra(reference, extra)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(intent)
+}
+
+fun app(fragment: Fragment) : Application {
+    return fragment.activity.application
 }

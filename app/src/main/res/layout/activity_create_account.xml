@@ -23,7 +23,7 @@
         style="@style/viewCustom"
         android:layout_below="@id/et_last_name"
         android:ems="10"
-        android:hint="@string/email"
+        android:hint="@string/id"
         android:inputType="textEmailAddress" />
 
     <EditText

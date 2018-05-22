@@ -1,16 +1,22 @@
-package com.pongmania.konanov.activity
+package com.pongmania.konanov.fragments
 
+import android.app.Application
+import android.app.Fragment
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.pongmania.konanov.PongMania
 import com.pongmania.konanov.R
+import com.pongmania.konanov.activity.ItemDivider
+import com.pongmania.konanov.activity.app
 import com.pongmania.konanov.adapter.PlayerMainAdapter
 import com.pongmania.konanov.api.PlayerApi
 import com.pongmania.konanov.model.Player
@@ -22,9 +28,9 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import javax.inject.Inject
 
-class ScoreBoardActivity : AppCompatActivity() {
+class ScoreBoardFragment : Fragment() {
 
-    private val TAG = "ScoreBoardActivity"
+    private val TAG = "ScoreBoardFragment"
 
     @Inject lateinit var retrofit: Retrofit
     @BindView(R.id.players_list) lateinit var playersList: RecyclerView
@@ -33,27 +39,32 @@ class ScoreBoardActivity : AppCompatActivity() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var playersOfLeague: List<Player>
 
+    private lateinit var app: Application
+
     @OnClick(R.id.me_button)
     fun findMe() {
-        val mail = DataHolder.getEmail(this.application)
+        val mail = DataHolder.getEmail(app)
         val player = playersOfLeague.find { it -> it.credentials.email == mail }
         val scrollTo = playersOfLeague.indexOf(player)
         playersList.smoothScrollToPosition(scrollTo)
         Log.d(TAG, "Scroll to player position: $scrollTo")
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_score_board)
-        (application as PongMania).webComponent.inject(this)
+        app = app(this)
+        val view = inflater.inflate(R.layout.fragment_planned_games, container, false)
+        ButterKnife.bind(this, view)
+        (app(this) as PongMania).webComponent.inject(this)
         api = retrofit.create(PlayerApi::class.java)
-        ButterKnife.bind(this)
 
         initialise()
+        return view
     }
 
     private fun initialise() {
-        val email = DataHolder.getEmail(this.application)
+        val email = DataHolder.getEmail(app)
         api.playersPublicLeague(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -68,7 +79,7 @@ class ScoreBoardActivity : AppCompatActivity() {
                 })
     }
 
-    private fun ScoreBoardActivity.findPlayersOfLeague(email: String,
+    private fun ScoreBoardFragment.findPlayersOfLeague(email: String,
                                                        result: PublicLeague): Disposable? {
         Log.d(TAG, "User with email $email has public league ${result.type}")
         return api.playersOfLeague(result.type.value)
@@ -77,6 +88,8 @@ class ScoreBoardActivity : AppCompatActivity() {
                 .subscribe({ players ->
                     run {
                         playersOfLeague = players
+                        val id = userId(players, email)
+                        DataHolder.setId(app, id)
                         transformPlayerToViewItem(players)
                     }
                 }, { error ->
@@ -86,23 +99,23 @@ class ScoreBoardActivity : AppCompatActivity() {
                 })
     }
 
-    private fun ScoreBoardActivity.invalidLeagueType(email: String, error: Throwable) {
+    private fun ScoreBoardFragment.invalidLeagueType(email: String, error: Throwable) {
         Log.d(TAG, "User with email $email has no public league\n"
                 + "${error.printStackTrace()}")
-        Toast.makeText(this, "Не найдена лига с указанным названием",
+        Toast.makeText(app, "Не найдена лига с указанным названием",
                 Toast.LENGTH_SHORT).show()
     }
 
-    private fun ScoreBoardActivity.playersOfLeagueLoadFailure(error: Throwable) {
+    private fun ScoreBoardFragment.playersOfLeagueLoadFailure(error: Throwable) {
         Log.d(TAG, "Request resulted in error\n${error.printStackTrace()}")
-        Toast.makeText(this, "Ошибка при загрузке игроков лиги",
+        Toast.makeText(app, "Ошибка при загрузке игроков лиги",
                 Toast.LENGTH_SHORT).show()
     }
 
-    private fun ScoreBoardActivity.transformPlayerToViewItem(players: List<Player>) {
+    private fun ScoreBoardFragment.transformPlayerToViewItem(players: List<Player>) {
         Log.d(TAG, "Users of league received. Total count: ${players.size}")
 
-        viewManager = LinearLayoutManager(this)
+        viewManager = LinearLayoutManager(app)
         viewAdapter = PlayerMainAdapter(ArrayList(players))
 
         playersList.apply {
@@ -110,6 +123,9 @@ class ScoreBoardActivity : AppCompatActivity() {
             layoutManager = viewManager
             adapter = viewAdapter
         }
-        playersList.addItemDecoration(ItemDivider(this@ScoreBoardActivity))
+        playersList.addItemDecoration(ItemDivider(app.applicationContext))
     }
+
+    private fun userId(players: List<Player>, email: String) =
+            players.filter { it.credentials.email == email }.map { it.id }.first()
 }

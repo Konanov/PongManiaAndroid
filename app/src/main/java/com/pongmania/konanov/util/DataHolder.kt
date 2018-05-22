@@ -7,6 +7,7 @@ import android.preference.PreferenceManager
 
 object DataHolder {
 
+    private const val ID = "com.pongmania.konanov.Id"
     private const val EMAIL = "com.pongmania.konanov.Email"
     private const val PASSWORD = "com.pongmania.konanov.Password"
     private const val GAME_DATE = "com.pongmania.konanov.GameDate"
@@ -33,6 +34,16 @@ object DataHolder {
         val editor = getSharedPreferences(app).edit()
         editor.putString(GAME_TIME, time)
         editor.apply()
+    }
+
+    fun setId(app: Application, id: String) {
+        val editor = getSharedPreferences(app).edit()
+        editor.putString(this.ID, id)
+        editor.apply()
+    }
+
+    fun getId(app: Application): String {
+        return getSharedPreferences(app).getString(ID, "")
     }
 
     fun getEmail(app: Application): String {
