@@ -18,6 +18,7 @@ import com.pongmania.konanov.activity.ItemDivider
 import com.pongmania.konanov.activity.app
 import com.pongmania.konanov.adapter.GamesMainAdapter
 import com.pongmania.konanov.api.GameApi
+import com.pongmania.konanov.api.PlayerApi
 import com.pongmania.konanov.model.Game
 import com.pongmania.konanov.util.DataHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -31,7 +32,8 @@ class PlannedGamesFragment : Fragment() {
 
     @Inject lateinit var retrofit: Retrofit
     @BindView(R.id.games_list) lateinit var gamesList: RecyclerView
-    private lateinit var api: GameApi
+    private lateinit var gameApi: GameApi
+    private lateinit var playerApi: PlayerApi
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var plannedGames: List<Game>
@@ -45,7 +47,8 @@ class PlannedGamesFragment : Fragment() {
         //val view = inflater.inflate(R.layout.fragment_planned_games, container, false) todo real fragment
         ButterKnife.bind(this, view)
         (app(this) as PongMania).webComponent.inject(this)
-        api = retrofit.create(GameApi::class.java)
+        gameApi = retrofit.create(GameApi::class.java)
+        playerApi = retrofit.create(PlayerApi::class.java)
 
         initialise()
         return view
@@ -53,7 +56,7 @@ class PlannedGamesFragment : Fragment() {
 
     private fun initialise() {
         val id = DataHolder.getId(app)
-        api.userPlannedGames(id)
+        gameApi.userPlannedGames(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ games ->
