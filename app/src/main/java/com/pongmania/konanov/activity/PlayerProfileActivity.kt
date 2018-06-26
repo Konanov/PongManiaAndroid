@@ -32,10 +32,10 @@ class PlayerProfileActivity : AppCompatActivity() {
 
         loadAvatar()
 
-        pingUser.setOnClickListener({
+        pingUser.setOnClickListener {
             goFor(this@PlayerProfileActivity,
                     PlanGameActivity::class.java, "rival", player)
-        })
+        }
     }
 
     private fun loadAvatar() {

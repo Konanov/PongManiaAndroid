@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.pongmania.konanov.R
+import com.pongmania.konanov.fragments.PlannedGamesFragment
 import com.pongmania.konanov.fragments.ScoreBoardFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -31,16 +32,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
+                this, app_main_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        app_main_layout.addDrawerListener(toggle)
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (app_main_layout.isDrawerOpen(GravityCompat.START)) {
+            app_main_layout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -69,7 +70,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // Handle the camera action
             }
             R.id.nav_gallery -> {
-
+                val plannedGames = PlannedGamesFragment()
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_content, plannedGames)
+                        .show(plannedGames).commit()
             }
             R.id.nav_slideshow -> {
 
@@ -85,7 +89,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        drawer_layout.closeDrawer(GravityCompat.START)
+        app_main_layout.closeDrawer(GravityCompat.START)
         return true
     }
 }

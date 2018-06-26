@@ -114,12 +114,12 @@ class LoginActivity : AppCompatActivity() {
         retrofit.create(PlayerApi::class.java).playerHasLeague(email)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                        if (!result) {
-                            goFor(this@LoginActivity, AssignLeagueActivity::class.java)
-                        } else {
-                            goFor(this@LoginActivity, MainActivity::class.java)
-                        }
-                })
+                .subscribe { result ->
+                    if (!result) {
+                        goFor(this@LoginActivity, AssignLeagueActivity::class.java)
+                    } else {
+                        goFor(this@LoginActivity, MainActivity::class.java)
+                    }
+                }
     }
 }

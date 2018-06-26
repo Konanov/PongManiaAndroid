@@ -1,6 +1,5 @@
 package com.pongmania.konanov.adapter
 
-import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,16 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.pongmania.konanov.R
-import com.pongmania.konanov.activity.PlayerProfileActivity
+import com.pongmania.konanov.api.PlayerApi
 import com.pongmania.konanov.model.Game
-import com.squareup.picasso.Picasso
+import retrofit2.Retrofit
+import java.util.*
+import javax.inject.Inject
 
 class GamesMainAdapter(private val games: ArrayList<Game>) : RecyclerView.Adapter<GamesMainAdapter.GameHolder>() {
+
+    @Inject lateinit var retrofit: Retrofit
+    private lateinit var playerApi: PlayerApi
 
     @BindView(R.id.profile_image)
     lateinit var avatar: ImageView
@@ -42,7 +46,9 @@ class GamesMainAdapter(private val games: ArrayList<Game>) : RecyclerView.Adapte
         gameLayout = layoutInflater.inflate(R.layout.game_row, parent, false)
         ButterKnife.bind(this, gameLayout)
 
-        return GamesMainAdapter.GameHolder(gameLayout, players)
+        playerApi = retrofit.create(PlayerApi::class.java)
+
+        return GamesMainAdapter.GameHolder(gameLayout, games)
     }
 
     override fun getItemCount(): Int {
@@ -55,28 +61,28 @@ class GamesMainAdapter(private val games: ArrayList<Game>) : RecyclerView.Adapte
 
     private fun setGameProperties(position: Int) {
         val game = games[position]
-        val hostName = game.hostName
-        val guestName = game.hostName
-        val winRatio = "${player.matchWinRatio.toPlainString()}%"
-        val picasso = Picasso.get()
-        val leaguePosition = "${position + 1}."
-        playerGamesPlayed.text = player.playedGamesCount.toString()
-        userName.text = playerName
-        ratingTitle.text = playerLayout.context.getString(R.string.rating)
-        matchWinRatio.text = winRatio
-        rating.text = player.latestRating.rating
-        playerPosition.text = leaguePosition
+        val host = playerApi.getPlayerByEmail(game.hostEmail).subscribe { hostName.text = "${it.credentials.firstName} ${it.credentials.lastName}" }
+        val guest = playerApi.getPlayerByEmail(game.guestEmail).subscribe { guestName.text = "${it.credentials.firstName} ${it.credentials.lastName}" }
+        //val winRatio = "${player.matchWinRatio.toPlainString()}%"
+        //val picasso = Picasso.get()
+        //val leaguePosition = "${position + 1}."
+        //playerGamesPlayed.text = player.playedGamesCount.toString()
+        //userName.text = playerName
+        //ratingTitle.text = playerLayout.context.getString(R.string.rating)
+        //matchWinRatio.text = winRatio
+        //rating.text = player.latestRating.rating
+        //playerPosition.text = leaguePosition
     }
 
-    class GameHolder internal constructor(view: View, players: ArrayList<Game>) :
+    class GameHolder internal constructor(view: View, games: ArrayList<Game>) :
             RecyclerView.ViewHolder(view) {
         init {
-            view.setOnClickListener({
-                val player = players[adapterPosition]
-                val intent = Intent(view.context, PlayerProfileActivity::class.java)
-                intent.putExtra("currentPlayer", player)
-                view.context.startActivity(intent)
-            })
+            view.setOnClickListener {
+                //val game = games[adapterPosition]
+                //val intent = Intent(view.context, PlayerProfileActivity::class.java)
+                //intent.putExtra("currentPlayer", player)
+                //view.context.startActivity(intent)
+            }
         }
     }
 }

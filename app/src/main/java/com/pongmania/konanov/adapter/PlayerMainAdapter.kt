@@ -69,12 +69,12 @@ class PlayerMainAdapter(private val players: ArrayList<Player>) :
     class PlayerHolder internal constructor(view: View, players: ArrayList<Player>) :
             RecyclerView.ViewHolder(view) {
         init {
-            view.setOnClickListener({
+            view.setOnClickListener {
                 val player = players[adapterPosition]
                 val intent = Intent(view.context, PlayerProfileActivity::class.java)
                 intent.putExtra("currentPlayer", player)
                 view.context.startActivity(intent)
-            })
+            }
         }
     }
 

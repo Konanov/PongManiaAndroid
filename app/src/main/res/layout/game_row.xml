@@ -16,7 +16,7 @@
         android:layout_marginTop="8dp"
         android:lines="2"
         android:maxLength="7"
-        android:text="Процент побед:"
+        android:text="Победы:"
         app:layout_constraintStart_toEndOf="@+id/hostName"
         app:layout_constraintTop_toBottomOf="@+id/hostRatingTitle" />
 
@@ -141,7 +141,7 @@
         android:layout_marginTop="8dp"
         android:lines="2"
         android:maxLength="7"
-        android:text="Процент побед:"
+        android:text="Победы:"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintHorizontal_bias="0.0"
@@ -185,89 +185,87 @@
 
     <Button
         android:id="@+id/acceptButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Подтвердить"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="&#x2714;"
+        android:textAllCaps="false"
+        android:textSize="8sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/rejectButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.80"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.100000024" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline5" />
 
     <Button
         android:id="@+id/rejectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Отклонить"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        tools:layout_editor_absoluteX="304dp" />
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginStart="8dp"
+        android:text="&#x2718;"
+        android:textAllCaps="false"
+        android:textSize="8sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/editButton" />
 
     <Button
         android:id="@+id/editButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Редактировать"
-        app:layout_constraintBottom_toTopOf="@+id/rejectButton"
-        app:layout_constraintEnd_toEndOf="@+id/acceptButton"
-        app:layout_constraintStart_toStartOf="@+id/acceptButton"
-        app:layout_constraintTop_toBottomOf="@+id/acceptButton" />
+        android:text="&#x270e;"
+        android:textAllCaps="false"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/timeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/timeTitle" />
 
     <TextView
         android:id="@+id/dateTitle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
         android:text="Дата:"
-        app:layout_constraintBaseline_toBaselineOf="@+id/acceptButton"
-        app:layout_constraintEnd_toStartOf="@+id/acceptButton"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="@+id/guideline5" />
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/timeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Время:"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/dateTitle"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline5" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/dateTitle"
+        app:layout_constraintTop_toBottomOf="@+id/dateTitle"
+        app:layout_constraintVertical_bias="0.100000024" />
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/dateTitle"
-        app:layout_constraintStart_toEndOf="@+id/dateTitle"
-        app:layout_constraintTop_toTopOf="@+id/dateTitle"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/dateTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.11"
+        app:layout_constraintStart_toEndOf="@+id/dateTitle" />
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/timeTitle"
-        app:layout_constraintTop_toTopOf="@+id/timeTitle"
-        app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="242dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/timeTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/date" />
 </android.support.constraint.ConstraintLayout>

@@ -54,7 +54,7 @@ class ScoreBoardFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
         app = app(this)
-        val view = inflater.inflate(R.layout.fragment_planned_games, container, false)
+        val view = inflater.inflate(R.layout.fragment_score_board, container, false)
         ButterKnife.bind(this, view)
         (app(this) as PongMania).webComponent.inject(this)
         api = retrofit.create(PlayerApi::class.java)

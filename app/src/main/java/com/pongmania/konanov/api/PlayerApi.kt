@@ -21,7 +21,7 @@ interface PlayerApi {
     @GET("player/{email}/has/league")
     fun playerHasLeague(@Path("email") email: String): Observable<Boolean>
 
-    @GET("players/of/{type}/league")
+    @GET("player/of/{type}/league")
     fun playersOfLeague(@Path("type") type: String): Observable<List<Player>>
 
     @POST("league/{type}/assign")
@@ -31,6 +31,6 @@ interface PlayerApi {
     @GET("player/{email}/public/league")
     fun playersPublicLeague(@Path("email") email: String): Observable<PublicLeague>
 
-    @GET("players/{email}")
+    @GET("player/{email}")
     fun getPlayerByEmail(@Path("email") email: String): Observable<Player>
 }
