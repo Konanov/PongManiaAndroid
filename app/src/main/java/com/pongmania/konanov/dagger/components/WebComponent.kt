@@ -1,6 +1,7 @@
 package com.pongmania.konanov.dagger.components
 
 import com.pongmania.konanov.activity.*
+import com.pongmania.konanov.adapter.GamesMainAdapter
 import com.pongmania.konanov.dagger.modules.WebModule
 import com.pongmania.konanov.fragments.PlannedGamesFragment
 import com.pongmania.konanov.fragments.ScoreBoardFragment
@@ -17,4 +18,5 @@ interface WebComponent {
     fun inject(activity: CreateAccountActivity)
     fun inject(activity: PlanGameActivity)
     fun inject(fragment: PlannedGamesFragment)
+    fun inject(adapter: GamesMainAdapter)
 }

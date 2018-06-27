@@ -74,7 +74,7 @@ class PlannedGamesFragment : Fragment() {
         Log.d(TAG, "Users of league received. Total count: ${plannedGames.size}")
 
         viewManager = LinearLayoutManager(app)
-        viewAdapter = GamesMainAdapter(ArrayList(plannedGames))
+        viewAdapter = GamesMainAdapter(this.app ,ArrayList(plannedGames))
 
         gamesList.apply {
             setHasFixedSize(true)

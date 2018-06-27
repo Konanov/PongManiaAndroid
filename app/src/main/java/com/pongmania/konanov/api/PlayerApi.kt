@@ -31,6 +31,9 @@ interface PlayerApi {
     @GET("player/{email}/public/league")
     fun playersPublicLeague(@Path("email") email: String): Observable<PublicLeague>
 
-    @GET("player/{email}")
+    @GET("player/byEmail/{email}")
     fun getPlayerByEmail(@Path("email") email: String): Observable<Player>
+
+    @GET("player/byId/{id}")
+    fun getPlayerById(@Path("id") id: String): Observable<Player>
 }
