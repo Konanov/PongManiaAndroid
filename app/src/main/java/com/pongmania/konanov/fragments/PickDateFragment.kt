@@ -39,16 +39,21 @@ class PickDateFragment : Fragment() {
         val view = inflater!!.inflate(R.layout.fragment_plan_date, container, false)
         ButterKnife.bind(this, view)
 
-        calendar.setOnDateChangeListener({ _, year, month, dayOfMonth ->
+        calendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val properMonth: String = if (month < 10) {
                 "0${month + 1}"
             } else {
                 (month + 1).toString()
             }
-            DataHolder.setGameDate(this.activity.application, "$dayOfMonth/$properMonth/$year")
-            Toast.makeText(view.context, "Выбрана дата $dayOfMonth/$properMonth/$year",
+            val properDay: String = if (dayOfMonth < 10) {
+                "0$dayOfMonth"
+            } else {
+                (dayOfMonth).toString()
+            }
+            DataHolder.setGameDate(this.activity.application, "$properDay-$properMonth-$year")
+            Toast.makeText(view.context, "Выбрана дата $properDay-$properMonth-$year",
                     Toast.LENGTH_SHORT).show()
-        })
+        }
 
         return view
     }

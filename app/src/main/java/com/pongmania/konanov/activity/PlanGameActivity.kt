@@ -1,5 +1,6 @@
 package com.pongmania.konanov.activity
 
+import android.annotation.SuppressLint
 import android.app.Fragment
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -20,7 +21,9 @@ import com.pongmania.konanov.util.DataHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
@@ -41,6 +44,7 @@ class PlanGameActivity : AppCompatActivity() {
         loadFragment(PickDateFragment())
     }
 
+    @SuppressLint("NewApi")
     @OnClick(R.id.offerGame)
     fun offerGame() {
         gameApi = retrofit.create(GameApi::class.java)
